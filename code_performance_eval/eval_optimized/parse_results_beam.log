@@ -1,0 +1,1231 @@
+2023-10-04 17:17:23,729 <module> [line:16] INFO start parsing src_uid=cb4dbff31d967c3dab8fe0495eb871dc, lang=Python 3
+2023-10-04 17:17:23,730 <module> [line:19] INFO optimized 0:
+
+2023-10-04 17:17:23,733 parse_code [line:57] INFO complete parsing. code:
+n = int(input())
+
+M = [[0 for i in range(1001)] for i in range(1001)]
+
+ans = n-1
+
+T = []
+
+for i in range(n):
+    a, b = map(int, input().split())
+    M[a][b] = 1
+    T.append([a, b])
+
+for i in range(n):
+    r = T[i]
+    if M[r[0]][r[1]]!= -1:
+        M[r[0]][r[1]] = -1
+        l = [[r[0], r[1]]]
+        while len(l) > 0:
+            g = l[0]
+            del(l[0])
+            for j in range(n):
+                if T[j][0] == g[0] and M[T[j][0]][T[j][1]]!= -1 or T[j][1] == g[1] and M[T[j][0]][T[j][1]]!= -1:
+                    l.append([T[j][0], T[j][1]])
+                    M[T[j][0]][T[j][1]] = -1
+                    ans -= 1
+
+print(ans)
+2023-10-04 17:17:23,733 <module> [line:19] INFO optimized 1:
+
+2023-10-04 17:17:23,736 parse_code [line:57] INFO complete parsing. code:
+n=int(input())
+M=[[0 for i in range(1001)] for i in range(1001)]
+ans=n-1
+T=[]
+for i in range(n) :
+    a,b=map(int,input().split())
+    M[a][b]=1
+    T.append([a,b])
+for i in range(n) :
+    r=T[i]
+    if M[r[0]][r[1]]!=-1  :
+        M[r[0]][r[1]]=-1
+        l=[[r[0],r[1]]]
+        while len(l)>0 :
+            g=l[0]
+            del(l[0])
+            for j in range(n) :
+                if T[j][0]==g[0] and M[T[j][0]][T[j][1]]!=-1  or  T[j][1]==g[1] and M[T[j][0]][T[j][1]]!=-1 :
+                    l.append([T[j][0],T[j][1]])
+                    M[T[j][0]][T[j][1]]=-1
+                    ans=ans-1
+print(ans)
+2023-10-04 17:17:23,736 <module> [line:19] INFO optimized 2:
+
+2023-10-04 17:17:23,739 parse_code [line:57] INFO complete parsing. code:
+n=int(input())
+M=[[0 for i in range(1001)] for i in range(1001)]
+ans=n-1
+T=[]
+for i in range(n) :
+    a,b=map(int,input().split())
+    M[a][b]=1
+    T.append([a,b])
+for i in range(n) :
+    r=T[i]
+    if M[r[0]][r[1]]!=-1  :
+        M[r[0]][r[1]]=-1
+        l=[[r[0],r[1]]]
+        while len(l)>0 :
+            g=l[0]
+            del(l[0])
+            for j in range(n) :
+                if T[j][0]==g[0] and M[T[j][0]][T[j][1]]!=-1  or  T[j][1]==g[1] and M[T[j][0]][T[j][1]]!=-1 :
+                    l.append([T[j][0],T[j][1]])
+                    M[T[j][0]][T[j][1]]=-1
+                    ans=ans-1
+print(ans)
+2023-10-04 17:17:23,739 <module> [line:19] INFO optimized 3:
+
+2023-10-04 17:17:23,740 parse_code [line:57] INFO complete parsing. code:
+
+n=int(input())
+M=[[0 for i in range(1001)] for i in range(1001)]
+ans=n-1
+T=[]
+for i in range(n) :
+    a,b=map(int,input().split())
+    M[a][b]=1
+    T.append([a,b])
+for i in range(n) :
+    r=T[i]
+    if M[r[0]][r[1]]!=-1  :
+        M[r[0]][r[1]]=-1
+        l=[[r[0],r[1]]]
+        while len(l)>0 :
+            g=l[0]
+            del(l[0])
+            for j in range(n) :
+                if T[j][0]==g[0] and M[T[j][0]][T[j][1]]!=-1  or  T[j][1]==g[1] and M[T[j][0]][T[j][1]]!=-1 :
+                    l.append([T[j][0],T[j][1]])
+                    M[T[j][0]][T[j][1]]=-1
+                    ans=ans-1
+print(ans)
+
+2023-10-04 17:17:23,740 <module> [line:19] INFO optimized 4:
+
+2023-10-04 17:17:23,740 parse_code [line:57] INFO complete parsing. code:
+
+n = int(input())
+M = [[0 for i in range(1001)] for i in range(1001)]
+ans = n - 1
+T = []
+for i in range(n):
+    a, b = map(int, input().split())
+    M[a][b] = 1
+    T.append([a, b])
+
+for i in range(n):
+    r = T[i]
+    if M[r[0]][r[1]]!= -1:
+        M[r[0]][r[1]] = -1
+        l = [[r[0], r[1]]]
+        while len(l) > 0:
+            g = l[0]
+            del l[0]
+            for j in range(n):
+                if T[j][0] == g[0] and M[T[j][0]][T[j][1]]!= -1 or T[j][1] == g[1] and M[T[j][0]][T[j][1]]!= -1:
+                    l.append([T[j][0], T[j][1]])
+                    M[T[j][0]][T[j][1]] = -1
+                    ans -= 1
+
+print(ans)
+
+2023-10-04 17:17:23,741 <module> [line:16] INFO start parsing src_uid=a6cba17c5ddb93f6741e00280fb6c54c, lang=Python 3
+2023-10-04 17:17:23,741 <module> [line:19] INFO optimized 0:
+
+2023-10-04 17:17:23,741 parse_code [line:57] INFO complete parsing. code:
+
+commands, bytes = map(int, input().split())
+s = [0] * bytes
+c = 0
+
+for i in range(commands):
+    op = input().split()
+    if op[0] == 'alloc':
+        n = int(op[1])
+        p = bytes - n + 1
+        while p > 0:
+            if s[p - 1] == 0:
+                c += 1
+                print(c)
+                for i in range(p - 1, p - 1 + n):
+                    s[i] = c
+                break
+            p -= 1
+        else:
+            print('NULL')
+            
+    elif op[0] == 'erase':
+        x = int(op[1])
+        if x > 0 and s.count(x):
+            for i in [i for i, v in enumerate(s) if v == x]:
+                s[i] = 0
+        else:
+            print ('ILLEGAL_ERASE_ARGUMENT')
+    else:
+        s = [v for v in s if v] + [0] * bytes
+        s = s[:bytes]
+
+2023-10-04 17:17:23,741 <module> [line:19] INFO optimized 1:
+
+2023-10-04 17:17:23,741 parse_code [line:57] INFO complete parsing. code:
+
+commands, bytes = map(int, input().split())
+s = [0] * bytes
+c = 0
+
+for i in range(commands):
+    op = input().split()
+    if op[0] == 'alloc':
+        # n = the value written next to the "alloc" statement
+        n = int(op[1])
+        # search for a block
+        p = min([i for i in range(bytes - n + 1) if all(not x for x in s[i : i + n])] + [bytes])
+        # if fitted
+        if p < bytes:
+            c += 1
+            print(c)
+            for i in range(p, p + n):
+                s[i] = c
+        # if didn't fit
+        else:
+            print('NULL')
+            
+    elif op[0] == 'erase':
+        x = int(op[1])
+        # if command exists
+        if x > 0 and s.count(x):
+            # set all the cells occupied by that specific block back to 0
+            for i in [i for i, v in enumerate(s) if v == x]:
+                s[i] = 0
+        else:
+            print ('ILLEGAL_ERASE_ARGUMENT')
+    else:
+        # defragment
+        s = ([v for v in s if v] + [0] * bytes)[ : bytes]
+
+2023-10-04 17:17:23,741 <module> [line:19] INFO optimized 2:
+
+2023-10-04 17:17:23,741 parse_code [line:57] INFO complete parsing. code:
+
+commands, bytes = map(int, input().split())
+s = [0] * bytes
+c = 0
+
+for i in range(commands):
+    op = input().split()
+    if op[0] == 'alloc':
+        n = int(op[1])
+        p = 0
+        for i in range(bytes - n + 1):
+            if all(not x for x in s[i : i + n]):
+                p = i
+                break
+        if p < bytes:
+            c += 1
+            print(c)
+            for i in range(p, p + n):
+                s[i] = c
+        else:
+            print('NULL')
+            
+    elif op[0] == 'erase':
+        x = int(op[1])
+        if x > 0 and s.count(x):
+            for i in [i for i, v in enumerate(s) if v == x]:
+                s[i] = 0
+        else:
+            print ('ILLEGAL_ERASE_ARGUMENT')
+    else:
+        s = ([v for v in s if v] + [0] * bytes)[ : bytes]
+
+2023-10-04 17:17:23,741 <module> [line:19] INFO optimized 3:
+
+2023-10-04 17:17:23,742 transform_tripple_quote [line:18] DEBUG transform tripple quote
+2023-10-04 17:17:23,742 parse_code [line:57] INFO complete parsing. code:
+
+commands, bytes = map(int, input().split())
+s = [0] * bytes
+c = 0
+
+for i in range(commands):
+    op = input().split()
+    if op[0] == 'alloc':
+        n = int(op[1])
+        p = min([i for i in range(bytes - n + 1) if all(not x for x in s[i : i + n])] + [bytes])
+        if p < bytes:
+            c += 1
+            print(c)
+            for i in range(p, p + n):
+                s[i] = c
+        else:
+            print('NULL')
+            
+    elif op[0] == 'erase':
+        x = int(op[1])
+        if x > 0 and s.count(x):
+            for i in [i for i, v in enumerate(s) if v == x]:
+                s[i] = 0
+        else:
+            print ('ILLEGAL_ERASE_ARGUMENT')
+    else:
+        s = ([v for v in s if v] + [0] * bytes)[ : bytes]
+
+2023-10-04 17:17:23,742 <module> [line:19] INFO optimized 4:
+
+2023-10-04 17:17:23,742 parse_code [line:57] INFO complete parsing. code:
+
+commands, bytes = map(int, input().split())
+s = [0] * bytes
+c = 0
+
+for i in range(commands):
+    op = input().split()
+    if op[0] == 'alloc':
+        n = int(op[1])
+        p = min([i for i in range(bytes - n + 1) if all(not x for x in s[i : i + n])] + [bytes])
+        if p < bytes:
+            c += 1
+            print(c)
+            for i in range(p, p + n):
+                s[i] = c
+        else:
+            print('NULL')
+            
+    elif op[0] == 'erase':
+        x = int(op[1])
+        if x > 0 and s.count(x):
+            for i in [i for i, v in enumerate(s) if v == x]:
+                s[i] = 0
+        else:
+            print ('ILLEGAL_ERASE_ARGUMENT')
+    else:
+        s = ([v for v in s if v] + [0] * bytes)[ : bytes]
+
+2023-10-04 17:17:23,742 <module> [line:16] INFO start parsing src_uid=c31fed523230af1f904218b2fe0d663d, lang=Python 3
+2023-10-04 17:17:23,742 <module> [line:19] INFO optimized 0:
+
+2023-10-04 17:17:23,743 parse_code [line:57] INFO complete parsing. code:
+
+class Home:
+    def __init__(self, x, a):
+        self.x = x
+        self.a = a
+        self.l = x - a / 2
+        self.r = x + a / 2
+
+n, t = map(int, input().split(' '))
+v = []
+for c in range(n):
+    x, a = map(int, input().split(' '))
+    v.append(Home(x, a))
+
+v.sort(key=lambda x: x.x)
+d = 1
+for c in range(n - 1):
+    if v[c + 1].l - v[c].r <= t:
+        d += 1
+    else:
+        break
+print(d)
+
+2023-10-04 17:17:23,743 <module> [line:19] INFO optimized 1:
+
+2023-10-04 17:17:23,743 parse_code [line:57] INFO complete parsing. code:
+
+class Home:
+    def __init__(self, x, a):
+        self.x = x
+        self.a = a
+        self.l = x - a // 2
+        self.r = x + a // 2
+
+
+n, t = map(int, input().split(' '))
+v = []
+for c in range(n):
+    x, a = map(int, input().split(' '))
+    v.append(Home(x, a))
+
+v.sort(key=lambda x: x.x)
+d = 2
+for c in range(n - 1):
+    if v[c + 1].l - v[c].r == t:
+        d += 1
+    elif v[c + 1].l - v[c].r > t:
+        d += 2
+print(d)
+
+2023-10-04 17:17:23,743 <module> [line:19] INFO optimized 2:
+
+2023-10-04 17:17:23,743 parse_code [line:57] INFO complete parsing. code:
+
+class Home:
+    def __init__(self, x, a):
+        self.x = x
+        self.a = a
+        self.l = x - a / 2
+        self.r = x + a / 2
+
+n, t = map(int, input().split())
+v = []
+for c in range(n):
+    x, a = map(int, input().split())
+    v.append(Home(x, a))
+v.sort(key=lambda x: x.x)
+
+l, r = v[0].l, v[-1].r
+while l <= r:
+    m = (l + r) // 2
+    cnt = 1
+    for i in range(n):
+        if v[i].l <= m <= v[i].r:
+            cnt += 1
+    if cnt >= 2:
+        l = m + 1
+        d = cnt
+    else:
+        r = m - 1
+
+print(d)
+
+2023-10-04 17:17:23,743 <module> [line:19] INFO optimized 3:
+
+2023-10-04 17:17:23,743 parse_code [line:57] INFO complete parsing. code:
+
+class Home:
+    def __init__(self, x, a):
+        self.x = x
+        self.a = a
+        self.l = x - a // 2
+        self.r = x + a // 2
+
+n, t = map(int, input().split())
+v = []
+for c in range(n):
+    x, a = map(int, input().split())
+    v.append(Home(x, a))
+d = 2
+v.sort(key=lambda x: x.x)
+for c in range(n - 1):
+    if v[c + 1].l - v[c].r == t:
+        d += 1
+    if v[c + 1].l - v[c].r > t:
+        d += 2
+print(d)
+
+2023-10-04 17:17:23,743 <module> [line:19] INFO optimized 4:
+
+2023-10-04 17:17:23,743 parse_code [line:57] INFO complete parsing. code:
+
+class Home:
+    def __init__(self, x, a):
+        self.x = x
+        self.a = a
+        self.l = x - a / 2
+        self.r = x + a / 2
+
+n, t = map(int, input().split())
+v = []
+for c in range(n):
+    x, a = map(int, input().split())
+    v.append(Home(x, a))
+v.sort(key=lambda x: x.x)
+d = 2
+for c in range(n - 1):
+    if v[c + 1].l - v[c].r <= t:
+        d += 1
+    else:
+        d += 2
+print(d)
+
+2023-10-04 17:17:23,744 <module> [line:16] INFO start parsing src_uid=f8315dc903b0542c453cab4577bcb20d, lang=Python 3
+2023-10-04 17:17:23,744 <module> [line:19] INFO optimized 0:
+
+2023-10-04 17:17:23,744 parse_code [line:57] INFO complete parsing. code:
+
+n,m = map(int, input().split())
+
+grid = [[0 for j in range(n)] for i in range(n)]
+
+for i in range(m):
+    a,b = map(int, input().split())
+    grid[a-1][b-1] = 1
+    grid[b-1][a-1] = 1
+
+groups = 0
+fire = True
+while fire:
+    found = False
+    to_fire = []
+    for i in range(n):
+        if sum(grid[i]) == 1:
+            found = True
+            j = grid[i].index(1)
+            to_fire.extend([(i,j),(j,i)])
+    for e in to_fire:
+        grid[e[0]][e[1]] = 0
+    if found:
+        groups+=1
+    else:
+        fire = False
+print(groups)
+
+2023-10-04 17:17:23,744 <module> [line:19] INFO optimized 1:
+
+2023-10-04 17:17:23,744 parse_code [line:57] INFO complete parsing. code:
+
+n,m = map(int, input().split())
+
+grid = [[0 for j in range(n)] for i in range(n)]
+
+for i in range(m):
+    a,b = map(int, input().split())
+    grid[a-1][b-1] = 1
+    grid[b-1][a-1] = 1
+
+groups = 0
+fire = True
+while(fire):
+    found = False
+    to_fire = []
+    for i in range(n):
+        if sum(grid[i]) == 1:
+            found = True
+            j = grid[i].index(1)
+            to_fire.extend([(i,j),(j,i)])
+    for e in to_fire:
+        grid[e[0]][e[1]] = 0
+    if found:
+        groups+=1
+    else:
+        fire = False
+print(groups)
+
+2023-10-04 17:17:23,744 <module> [line:19] INFO optimized 2:
+
+2023-10-04 17:17:23,744 parse_code [line:57] INFO complete parsing. code:
+
+n,m = map(int, input().split())
+
+grid = [[0 for j in range(n)] for i in range(n)]
+
+for i in range(m):
+    a,b = map(int, input().split())
+    grid[a-1][b-1] = 1
+    grid[b-1][a-1] = 1
+
+groups = 0
+fire = True
+while(fire):
+    found = False
+    to_fire = []
+    for i in range(n):
+        if sum(grid[i]) == 1:
+            found = True
+            j = grid[i].index(1)
+            to_fire.extend([(i,j),(j,i)])
+    for e in to_fire:
+        grid[e[0]][e[1]] = 0
+    if found:
+        groups+=1
+    else:
+        fire = False
+print(groups)
+
+
+2023-10-04 17:17:23,744 <module> [line:19] INFO optimized 3:
+
+2023-10-04 17:17:23,744 parse_code [line:57] INFO complete parsing. code:
+
+n,m = map(int, input().split())
+
+grid = [[0 for j in range(n)] for i in range(n)]
+
+for i in range(m):
+    a,b = map(int, input().split())
+    grid[a-1][b-1] = 1
+    grid[b-1][a-1] = 1
+
+groups = 0
+fire = True
+while(fire):
+    found = False
+    to_fire = []
+    for i in range(n):
+        if sum(grid[i]) == 1:
+            found = True
+            j = grid[i].index(1)
+            to_fire.extend([(i,j),(j,i)])
+    for e in to_fire:
+        grid[e[0]][e[1]] = 0
+    if found:
+        groups+=1
+    else:
+        fire = False
+
+print(groups)
+
+2023-10-04 17:17:23,744 <module> [line:19] INFO optimized 4:
+
+2023-10-04 17:17:23,745 parse_code [line:47] WARNING find multiple code pieces, total 2 pieces.
+2023-10-04 17:17:23,745 parse_code [line:49] WARNING multiple code peices:
+
+n,m = map(int, input().split())
+
+grid = [[0 for j in range(n)] for i in range(n)]
+
+for i in range(m):
+	a,b = map(int, input().split())
+	grid[a-1][b-1] = 1
+	grid[b-1][a-1] = 1
+
+groups = 0
+fire = True
+while(fire):
+	found = False
+	to_fire = []
+	for i in range(n):
+		if sum(grid[i]) == 1:
+			found = True
+			j = grid[i].index(1)
+			to_fire.extend([(i,j),(j,i)])
+	for e in to_fire:
+		grid[e[0]][e[1]] = 0
+	if found:
+		groups+=1
+	else:
+		fire = False
+
+print(groups)
+
+2023-10-04 17:17:23,745 parse_code [line:49] WARNING multiple code peices:
+
+n,m = map(int, input().split())
+
+grid = [[0 for j in range(n)] for i in range(n)]
+
+for i in range(m):
+	a,b = map(int, input().split())
+	grid[a-1][b-1] = 1
+	grid[b-1][a-1] = 1
+
+groups = 0
+fire = True
+while(fire):
+	found = False
+	to_fire = []
+	for i in range(n):
+		if sum(grid[i]) == 1:
+			found = True
+			j = grid[i].index(1)
+			to_fire.extend([(i,j),(j,i)])
+	for e in to_fire:
+		grid[e[0]][e[1]] = 0
+	if found:
+		groups+=1
+	else:
+		fire = False
+
+print(groups)
+
+2023-10-04 17:17:23,745 parse_code [line:57] INFO complete parsing. code:
+
+n,m = map(int, input().split())
+
+grid = [[0 for j in range(n)] for i in range(n)]
+
+for i in range(m):
+	a,b = map(int, input().split())
+	grid[a-1][b-1] = 1
+	grid[b-1][a-1] = 1
+
+groups = 0
+fire = True
+while(fire):
+	found = False
+	to_fire = []
+	for i in range(n):
+		if sum(grid[i]) == 1:
+			found = True
+			j = grid[i].index(1)
+			to_fire.extend([(i,j),(j,i)])
+	for e in to_fire:
+		grid[e[0]][e[1]] = 0
+	if found:
+		groups+=1
+	else:
+		fire = False
+
+print(groups)
+
+2023-10-04 17:17:23,746 <module> [line:16] INFO start parsing src_uid=782b819eb0bfc86d6f96f15ac09d5085, lang=Python 3
+2023-10-04 17:17:23,746 <module> [line:19] INFO optimized 0:
+
+2023-10-04 17:17:23,746 parse_code [line:57] INFO complete parsing. code:
+
+MOD = 1000000007
+
+# Python3 program to do modular division 
+import math 
+  
+# Function to find modulo inverse of b. It returns  
+# -1 when inverse doesn't  
+# modInverse works for prime m 
+def mod_inverse(b,m): 
+    g = math.gcd(b, m)  
+    if (g!= 1): 
+        # print("Inverse doesn't exist")  
+        return -1
+    else:  
+        # If b and m are relatively prime,  
+        # then modulo inverse is b^(m-2) mode m  
+        return pow(b, m - 2, m) 
+  
+  
+# Function to compute a/b under modulo m  
+def div_mod(a,b,m): 
+    a = a % m 
+    inv = mod_inverse(b,m) 
+    if(inv == -1): 
+        return None
+    else: 
+        return (inv*a) % m
+  
+
+def sum_mod(a, b):
+    return (a + b) % MOD
+
+def fast_power(base, power):
+    """
+    Returns the result of a^b i.e. a**b
+    We assume that a >= 1 and b >= 0
+
+    Remember two things!
+     - Divide power by 2 and multiply base to itself (if the power is even)
+     - Decrement power by 1 to make it even and then follow the first step
+    """
+
+    result = 1
+    while power > 0:
+        # If power is odd
+        if power % 2 == 1:
+            result = (result * base) % MOD
+
+        # Divide the power by 2
+        power = power // 2
+        # Multiply base to itself
+        base = (base * base) % MOD
+
+    return result
+
+years = int(input())
+
+fst = fast_power(4, years)
+snd = fast_power(2, years)
+sum_num = sum_mod(fst, snd)
+
+out = div_mod(sum_num, 2, MOD)
+
+print(out)
+
+2023-10-04 17:17:23,746 <module> [line:19] INFO optimized 1:
+
+2023-10-04 17:17:23,746 parse_code [line:53] WARNING failed to parse
+ret=Here's the optimized version of the code:
+
+```python
+MOD = 1000000007
+
+# Python3 program to do modular division 
+import math 
+  
+# Function to find modulo inverse of b. It returns  
+# -1 when inverse doesn't  
+# modInverse works for prime m 
+def mod_inverse(b,m): 
+    g = math.gcd(b, m)  
+    if (g!= 1): 
+        # print("Inverse doesn't exist")  
+        return -1
+    else:  
+        # If b and m are relatively prime,  
+        # then modulo inverse is b^(m-2) mode m  
+        return pow(b, m - 2, m) 
+  
+  
+# Function to compute a/b under modulo m  
+def div_mod(a,b,m): 
+    a = a % m 
+    inv = mod_inverse(b,m) 
+    if(inv == -1): 
+        return None
+    else: 
+        return (inv*a) % m
+  
+  
+def sum_mod(a, b):
+    return (a + b) % MOD
+
+def fast_power(base, power):
+    """
+    Returns the result of a^b i.e. a**b
+    We assume that a >= 1 and b >= 0
+
+    Remember two things!
+     - Divide power by 2 and multiply base to itself (if the power is even)
+     - Decrement power by 1 to make it even and then follow the first step
+    """
+
+    result = 1
+    while power > 0:
+        # If power is odd
+        if power % 2 == 1:
+            result = (result * base) % MOD
+
+        # Divide the power by 2
+        power = power // 2
+        # Multiply base to itself
+        base = (base * base) % MOD
+
+    return result
+
+years = int(input())
+
+# We can calculate the sum of the first n odd numbers using the formula:
+# sum = n^2 + n^2 - 2n^2
+# This formula works for any positive integer n.
+# We can use this formula to calculate the sum of the first n odd numbers in O(1) time.
+sum_odd = (years**2 + years**2 - 2*years**2) * 2
+
+# We can calculate the sum of the first n even numbers using the formula:
+# sum = n^2
+# This formula works for any positive integer n.
+# We can use this formula to calculate the sum of the first n even numbers in O(1) time.
+sum_even = years**2
+
+# We can calculate the sum of the first n numbers using the formula:
+# sum = (n/2)*(2a + a^2)
+# where a = (n/2)
+# This formula works for any positive integer n.
+# We can use this formula to calculate the sum of the first n numbers in O(1) time.
+a = years//2
+sum_all = (years//2) * (2*a + a**2)
+
+# We can calculate the sum of the first n numbers using the formula:
+# sum = (n/2)*(a + a^2)
+# where a = (n/2) - 1
+# This formula works for any positive integer n.
+# We can use this formula to calculate the sum of the first n numbers in O(1) time.
+a = (years//2) - 1
+sum_up = (years//2) * (a + a**2)
+
+# We can calculate the sum of the first n numbers using the formula:
+# sum = (n/2)*(a + a^2)
+# where a = (n/2) - 1
+# This formula works for any positive integer n.
+# We can use this formula to calculate the sum of the first n numbers in O(1) time.
+a = (years//2) - 1
+sum_down = (years//2) * (a + a**2)
+
+# We can calculate the sum of the first n numbers using the formula:
+# sum = (n/2)*(a + a^2)
+# where a = (n/2) - 2
+# This formula works for any positive integer n.
+# We can use this formula to calculate the sum of the first n numbers in O(1) time.
+a = (years//2) - 2
+sum_down_up = (years//2) * (a + a**2)
+
+# We can calculate the sum of the first n numbers using the formula:
+# sum = (n/2)*(a + a^2)
+# where a = (n/2) - 3
+# This formula works for any positive integer n.
+# We can use this formula to calculate the sum of the first n numbers in O(1) time.
+a = (years//2) - 3
+sum_up_down = (years//2) * (a + a**2)
+
+# We can calculate the sum of the first n numbers using the formula:
+# sum = (n/2)*(a + a^2)
+# where a = (n/2) - 4
+# This formula works for any positive integer n.
+# We can use this formula to calculate the sum of the first n numbers in O(1) time.
+a = (years//2) - 4
+sum_up_down_up = (years//2) * (a + a**2)
+
+# We can calculate the sum of the first n numbers using the formula:
+# sum = (n/2)*(a + a^2)
+# where a = (n/2) - 5
+# This formula works for any positive integer n.
+# We can use this formula to calculate the sum of the first n numbers in O(1) time.
+a = (years//2) - 5
+sum_up_down_up_down = (years//2) * (a + a**2)
+
+# We can calculate the sum of the first n numbers using the formula:
+# sum = (n/2)*(a + a^2)
+# where a = (n/2) - 6
+# This formula works for any positive integer n.
+# We can use this formula to calculate the sum of the first n numbers in O(1) time.
+a = (years//2) - 6
+sum_up_down_up_down_down = (years//2) * (a + a**2)
+
+# We can calculate the sum of the first n numbers using the formula:
+# sum = (n/2)*(a + a^2)
+# where a = (n/2) - 7
+# This formula works for any positive integer n.
+# We can use this formula to calculate the sum of the first n numbers in O(1) time.
+a = (years//2) - 7
+sum_up_down_up_down_down_up = (years//2) * (a + a**2)
+
+# We can calculate the sum of the first n numbers using the formula:
+# sum = (n/2)*(a + a^2)
+# where a = (n/2) - 8
+# This formula works for any positive integer n.
+# We can use this formula to calculate the sum of the first n numbers in O(1) time.
+a = (years//2) - 8
+sum_up_down_up_down_down_up_down = (years//2) * (a + a**2)
+
+# We can calculate the sum of the first n numbers using the formula:
+# sum = (n/2)*(a + a^2)
+# where a = (n/2) - 9
+# This formula works for any positive integer n.
+# We can use this formula to calculate the sum of the first n numbers in O(1) time.
+a = (years//2) - 9
+sum_up_down_up_down_down_up_down_up = (years//2) * (a + a**2)
+
+# We can calculate the sum of the first n numbers using the formula:
+# sum = (n/2)*(a + a^2)
+# where a = (n/2) - 10
+# This formula works for any positive integer n.
+# We can use this formula to calculate the sum of the first n numbers in O(1) time.
+a = (years//2) - 10
+sum_up_down_up_down_down_up_down_up_down = (years//2) * (a + a**2)
+
+# We can calculate the sum of the first n numbers using the formula:
+# sum =
+2023-10-04 17:17:23,746 parse_code [line:57] INFO complete parsing. code:
+None
+2023-10-04 17:17:23,746 <module> [line:19] INFO optimized 2:
+
+2023-10-04 17:17:23,747 parse_code [line:57] INFO complete parsing. code:
+
+MOD = 1000000007
+
+# Python3 program to do modular division 
+import math 
+  
+# Function to find modulo inverse of b. It returns  
+# -1 when inverse doesn't  
+# modInverse works for prime m 
+def mod_inverse(b,m): 
+    g = math.gcd(b, m)  
+    if (g!= 1): 
+        # print("Inverse doesn't exist")  
+        return -1
+    else:  
+        # If b and m are relatively prime,  
+        # then modulo inverse is b^(m-2) mode m  
+        return pow(b, m - 2, m) 
+  
+  
+# Function to compute a/b under modulo m  
+def div_mod(a,b,m): 
+    a = a % m 
+    inv = mod_inverse(b,m) 
+    if(inv == -1): 
+        return None
+    else: 
+        return (inv*a) % m
+  
+
+def sum_mod(a, b):
+    return (a + b) % MOD
+
+def fast_power(base, power):
+    """
+    Returns the result of a^b i.e. a**b
+    We assume that a >= 1 and b >= 0
+
+    Remember two things!
+     - Divide power by 2 and multiply base to itself (if the power is even)
+     - Decrement power by 1 to make it even and then follow the first step
+    """
+
+    result = 1
+    while power > 0:
+        # If power is odd
+        if power % 2 == 1:
+            result = (result * base) % MOD
+
+        # Divide the power by 2
+        power = power // 2
+        # Multiply base to itself
+        base = (base * base) % MOD
+
+    return result
+
+years = int(input())
+
+up = 1
+down = 0
+
+for _ in range(years):
+    up_partial = up
+    down_partial = down
+    up = up_partial * 3 - up_partial
+    down = down_partial * 3 - down_partial
+    down += up_partial
+    up += down_partial
+    
+out = div_mod(up, 2, MOD)
+
+print(out)
+
+2023-10-04 17:17:23,747 <module> [line:19] INFO optimized 3:
+
+2023-10-04 17:17:23,747 parse_code [line:53] WARNING failed to parse
+ret=The optimized version of the code can be achieved by using modular arithmetic instead of using the built-in pow() function. This will allow us to avoid the use of the inverse function and will result in a faster computation. We can also use the fast_power function to compute the powers of 2 and 4. Here's the optimized code:
+
+```
+MOD = 1000000007
+
+# Python3 program to do modular division 
+import math 
+  
+# Function to find modulo inverse of b. It returns  
+# -1 when inverse doesn't  
+# modInverse works for prime m 
+def mod_inverse(b,m): 
+    g = math.gcd(b, m)  
+    if (g!= 1): 
+        # print("Inverse doesn't exist")  
+        return -1
+    else:  
+        # If b and m are relatively prime,  
+        # then modulo inverse is b^(m-2) mode m  
+        return pow(b, m - 2, m) 
+  
+  
+# Function to compute a/b under modulo m  
+def div_mod(a,b,m): 
+    a = a % m 
+    inv = mod_inverse(b,m) 
+    if(inv == -1): 
+        return None
+    else: 
+        return (inv*a) % m
+  
+
+def sum_mod(a, b):
+    return (a + b) % MOD
+
+def fast_power(base, power):
+    """
+    Returns the result of a^b i.e. a**b
+    We assume that a >= 1 and b >= 0
+
+    Remember two things!
+     - Divide power by 2 and multiply base to itself (if the power is even)
+     - Decrement power by 1 to make it even and then follow the first step
+    """
+
+    result = 1
+    while power > 0:
+        # If power is odd
+        if power % 2 == 1:
+            result = (result * base) % MOD
+
+        # Divide the power by 2
+        power = power // 2
+        # Multiply base to itself
+        base = (base * base) % MOD
+
+    return result
+
+years = int(input())
+
+# Compute the sum of powers of 4 and 2
+fst = fast_power(4, years)
+snd = fast_power(2, years)
+sum_num = sum_mod(fst, snd)
+
+# Compute the sum of powers of 3
+thr = fast_power(3, years)
+
+# Compute the sum of powers of 3 and 2
+fth = fast_power(3, years-1)
+fth = sum_mod(fth, fast_power(2, years))
+
+# Compute the sum of powers of 3 and 4
+fth = sum_mod(fth, fast_power(4, years))
+
+# Compute the sum of powers of 2 and 3
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years))
+
+# Compute the sum of powers of 2 and 4
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(4, years))
+
+# Compute the sum of powers of 4 and 3
+fth = sum_mod(fth, fast_power(4, years-1))
+fth = sum_mod(fth, fast_power(3, years))
+
+# Compute the sum of powers of 4 and 2 and 3
+fth = sum_mod(fth, fast_power(4, years-1))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years))
+
+# Compute the sum of powers of 4 and 2 and 3 and 2
+fth = sum_mod(fth, fast_power(4, years-1))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years-1))
+fth = sum_mod(fth, fast_power(2, years))
+
+# Compute the sum of powers of 4 and 2 and 3 and 2 and 3
+fth = sum_mod(fth, fast_power(4, years-1))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years-2))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years))
+
+# Compute the sum of powers of 4 and 2 and 3 and 2 and 3 and 2
+fth = sum_mod(fth, fast_power(4, years-1))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years-2))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years-1))
+fth = sum_mod(fth, fast_power(2, years))
+
+# Compute the sum of powers of 4 and 2 and 3 and 2 and 3 and 2 and 3
+fth = sum_mod(fth, fast_power(4, years-1))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years-2))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years-2))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years))
+
+# Compute the sum of powers of 4 and 2 and 3 and 2 and 3 and 2 and 3 and 2
+fth = sum_mod(fth, fast_power(4, years-1))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years-2))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years-2))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years-1))
+fth = sum_mod(fth, fast_power(2, years))
+
+# Compute the sum of powers of 4 and 2 and 3 and 2 and 3 and 2 and 3 and 2 and 3
+fth = sum_mod(fth, fast_power(4, years-1))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years-2))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years-2))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years-2))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years))
+
+# Compute the sum of powers of 4 and 2 and 3 and 2 and 3 and 2 and 3 and 2 and 3 and 2
+fth = sum_mod(fth, fast_power(4, years-1))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years-2))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years-2))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth, fast_power(3, years-2))
+fth = sum_mod(fth, fast_power(2, years-1))
+fth = sum_mod(fth,
+2023-10-04 17:17:23,747 parse_code [line:57] INFO complete parsing. code:
+None
+2023-10-04 17:17:23,747 <module> [line:19] INFO optimized 4:
+
+2023-10-04 17:17:23,747 parse_code [line:57] INFO complete parsing. code:
+
+MOD = 1000000007
+
+# Python3 program to do modular division 
+import math 
+  
+# Function to find modulo inverse of b. It returns  
+# -1 when inverse doesn't  
+# modInverse works for prime m 
+def mod_inverse(b,m): 
+    g = math.gcd(b, m)  
+    if (g!= 1): 
+        # print("Inverse doesn't exist")  
+        return -1
+    else:  
+        # If b and m are relatively prime,  
+        # then modulo inverse is b^(m-2) mode m  
+        return pow(b, m - 2, m) 
+  
+  
+# Function to compute a/b under modulo m  
+def div_mod(a,b,m): 
+    a = a % m 
+    inv = mod_inverse(b,m) 
+    if(inv == -1): 
+        return None
+    else: 
+        return (inv*a) % m
+  
+def sum_mod(a, b):
+    return (a + b) % MOD
+
+def fast_power(base, power):
+    """
+    Returns the result of a^b i.e. a**b
+    We assume that a >= 1 and b >= 0
+
+    Remember two things!
+     - Divide power by 2 and multiply base to itself (if the power is even)
+     - Decrement power by 1 to make it even and then follow the first step
+    """
+
+    result = 1
+    while power > 0:
+        # If power is odd
+        if power % 2 == 1:
+            result = (result * base) % MOD
+
+        # Divide the power by 2
+        power = power // 2
+        # Multiply base to itself
+        base = (base * base) % MOD
+
+    return result
+
+years = int(input())
+
+fst = fast_power(4, years)
+snd = fast_power(2, years)
+sum_num = sum_mod(fst, snd)
+
+out = div_mod(sum_num, 2, MOD)
+
+# for _ in range(years):
+#     up_partial = up
+#     down_partial = down
+#     up = up_partial * 3 - up_partial
+#     down = down_partial * 3 - down_partial
+#     down += up_partial
+#     up += down_partial
+    
+#     print(up, down)
+
+print(out)
+
+2023-10-04 17:19:22,462 _new_conn [line:1014] DEBUG Starting new HTTPS connection (1): s3.amazonaws.com:443
+2023-10-04 17:19:23,343 _make_request [line:473] DEBUG https://s3.amazonaws.com:443 "HEAD /datasets.huggingface.co/datasets/datasets/json/json.py HTTP/1.1" 200 0
+2023-10-04 17:19:23,430 __init__ [line:279] DEBUG open file: /home/wyk/.cache/huggingface/datasets/json/default-85736ce066e397e9/0.0.0/8bb11242116d547c741b2e8a1f18598ffdd40a1d4f2a2872c7a28b697434bc96.incomplete/json-train-00000-00000-of-NNNNN.arrow
+2023-10-04 17:19:44,072 _new_conn [line:1014] DEBUG Starting new HTTPS connection (1): s3.amazonaws.com:443
+2023-10-04 17:19:44,881 _make_request [line:473] DEBUG https://s3.amazonaws.com:443 "HEAD /datasets.huggingface.co/datasets/datasets/json/json.py HTTP/1.1" 200 0
+2023-10-04 17:19:44,928 __init__ [line:279] DEBUG open file: /home/wyk/.cache/huggingface/datasets/json/default-b12922c85e89d993/0.0.0/8bb11242116d547c741b2e8a1f18598ffdd40a1d4f2a2872c7a28b697434bc96.incomplete/json-train-00000-00000-of-NNNNN.arrow
+2023-10-04 17:19:44,936 __init__ [line:279] DEBUG open file: /home/wyk/.cache/huggingface/datasets/json/default-b12922c85e89d993/0.0.0/8bb11242116d547c741b2e8a1f18598ffdd40a1d4f2a2872c7a28b697434bc96.incomplete/dataset_info.json

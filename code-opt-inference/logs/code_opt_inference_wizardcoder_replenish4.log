@@ -1,0 +1,3376 @@
+2023-10-09 17:17:12 - eval_wizardcoder_opt_replenish.py - INFO - max input tokens: 2048
+2023-10-09 17:17:12 - eval_wizardcoder_opt_replenish.py - INFO - max output tokens: 2048
+2023-10-09 17:17:14 - eval_wizardcoder_opt_replenish.py - INFO - =====start mem optimiing=====
+2023-10-09 17:17:14 - fingerprint.py - WARNING - Parameter 'function'=<function add_mem_optimization at 0x7f02ac039670> of the transform datasets.arrow_dataset.Dataset._map_single couldn't be hashed properly, a random hash was used instead. Make sure your transforms and parameters are serializable with pickle or dill for the dataset fingerprinting and caching to work. If you reuse this transform, the caching mechanism will consider it to be different from the previous calls and recompute everything. This warning is only showed once. Subsequent hashing failures won't be showed.
+2023-10-09 17:17:14 - eval_wizardcoder_opt_replenish.py - INFO - 
+start mem optimizing for src_uid=369f37d3487ba8c158e24f5ca759287b, lang=GNU C++
+2023-10-09 17:17:14 - eval_wizardcoder_opt_replenish.py - INFO - unoptimized code:
+ #include<cstdio>
+#include<cmath>
+#include<vector>
+#include<algorithm>
+using namespace std;
+#define pb push_back
+const double eps=1e-8;
+struct P
+{
+    double x,y;
+    P(){}
+    P(double _x,double _y):x(_x),y(_y){}
+    double abs(){return sqrt(x*x+y*y);}
+    P operator + (const P&a) const {return P(x+a.x,y+a.y);}
+    P operator - (const P&a) const {return P(x-a.x,y-a.y);}
+    P operator * (const double&a) const {return P(x*a,y*a);}
+    P operator / (const double&a) const {return P(x/a,y/a);}
+    bool operator < (const P&a) const {return x<a.x-eps||fabs(x-a.x)<eps&&y<a.y;}
+    bool operator == (const P&a) const {return (*this-a).abs()<eps;}
+    P rot(){return P(y,-x);}
+    void get(){scanf("%lf%lf",&x,&y);}
+};
+struct T
+{
+    P a[3];double b[3];
+    void get()
+    {
+        for(int i=0;i<3;i++)a[i].get();
+        for(int i=0;i<3;i++)b[i]=(a[i]-a[(i+1)%3]).abs();
+    }
+}a[4];
+bool equ(double a,double b){return fabs(a-b)<eps;}
+bool tri(double a,double b,double c){return a+b>c-eps&&b+c>a-eps&&c+a>b-eps;}
+void geti(P a,P b,double la,double lb,vector<P>&e)
+{
+    double d=(a-b).abs();
+    if(!tri(la,lb,d))return;
+    if(la+lb<d+eps)e.pb(a+(b-a)*la/d);else
+    {
+        double co=(d*d+la*la-lb*lb)/(2*d*la),si=sqrt(max(0.0,1.0-co*co));
+        e.pb(a+(b-a)*la*co/d+(b-a).rot()*la*si/d),
+        e.pb(a+(b-a)*la*co/d-(b-a).rot()*la*si/d);
+    }
+    sort(e.begin(),e.end()),
+    e.erase(unique(e.begin(),e.end()),e.end());
+}
+int S=9;
+void ff(vector<P> a,vector<T> b)
+{
+    S=min(S,(int)a.size()+(int)b.size()*2);
+    if((int)a.size()>=S)return;
+    if(b.empty()){S=min(S,(int)a.size());return;}
+    for(int i=0;i<(int)a.size();i++)
+        for(int j=i+1;j<(int)a.size();j++)
+        {
+            double d=(a[i]-a[j]).abs();
+            for(int k=0;k<(int)b.size();k++)
+            {
+                vector<P> e;
+                for(int l=0;l<3;l++)
+                    if(equ(b[k].b[l],d))
+                        geti(a[i],a[j],b[k].b[(l+1)%3],b[k].b[(l+2)%3],e),
+                        geti(a[i],a[j],b[k].b[(l+2)%3],b[k].b[(l+1)%3],e);
+                for(int l=0;l<(int)e.size();l++)
+                {
+                    vector<P> a0=a;a0.pb(e[l]);
+                    sort(a0.begin(),a0.end()),
+                    a0.erase(unique(a0.begin(),a0.end()),a0.end());
+                    vector<T> b0=b;b0.erase(b0.begin()+k);
+                    ff(a0,b0);
+                }
+            }
+        }
+}
+int main()
+{
+    for(int i=0;i<4;i++)a[i].get();
+    for(int k=0;k<81;k++)
+    {
+        double e[4];
+        for(int i=0,j=k;i<4;j/=3,i++)e[i]=a[i].b[j%3];
+        if(e[0]+e[1]+e[2]+e[3]>2* *max_element(e,e+4)-eps)S=min(S,8);
+    }
+    for(int i=0;i<4;i++)
+    {
+        vector<P> a0;
+        for(int j=0;j<3;j++)a0.pb(a[i].a[j]);
+        sort(a0.begin(),a0.end()),
+        a0.erase(unique(a0.begin(),a0.end()),a0.end());
+        vector<T> b0;
+        for(int j=0;j<4;j++)if(i!=j)b0.pb(a[j]);
+        ff(a0,b0);
+    }
+    for(int i=0;i<4;i++)
+    {
+        vector<int> p;
+        for(int j=0;j<4;j++)if(j!=i)p.pb(j);
+        for(int k=0;k<27;k++)
+        {
+            vector<P> a0;
+            vector<double> l;
+            for(int i=0,j=k;i<3;j/=3,i++)l.pb(a[p[i]].b[j%3]);
+            vector<P> e;
+            a0.pb(P(0,0)),a0.pb(P(0,l[0]));geti(P(0,0),P(0,l[0]),l[2],l[1],e);
+            if(e.empty())continue;a0.pb(e[0]);
+            for(int o=0;o<64;o++)
+            {
+                vector<P> a1=a0;
+                for(int i=0,j=k;i<3;j/=3,i++)
+                {
+                    e.clear();
+                    if((o>>i*2)&1)geti(a0[i],a0[(i+1)%3],a[p[i]].b[(j%3+1)%3],a[p[i]].b[(j%3+2)%3],e);
+                    else geti(a0[i],a0[(i+1)%3],a[p[i]].b[(j%3+2)%3],a[p[i]].b[(j%3+1)%3],e);
+                    if(e.empty())goto end;
+                    if((int)e.size()==1)a1.pb(e[0]);else
+                    if(((o>>i*2)&3)/2)a1.pb(e[0]);else a1.pb(e[1]);
+                }
+                sort(a1.begin(),a1.end()),
+                a1.erase(unique(a1.begin(),a1.end()),a1.end());
+                ff(a1,vector<T>(1,a[i]));
+                end:;
+            }
+        }
+    }
+    for(int w=0;w<81;w++)
+        for(int i=0;i<4;i++)
+            for(int j=i+1;j<4;j++)
+            {
+                if(!equ(a[i].b[w%3],a[j].b[w/3%3]))continue;
+                vector<P> e,f;
+                geti(P(0,0),P(0,a[i].b[w%3]),a[i].b[(w%3+1)%3],a[i].b[(w%3+2)%3],e),
+                geti(P(0,0),P(0,a[i].b[w%3]),a[i].b[(w%3+2)%3],a[i].b[(w%3+1)%3],e),
+                geti(P(0,0),P(0,a[j].b[w/3%3]),a[j].b[(w/3%3+1)%3],a[j].b[(w/3%3+2)%3],f),
+                geti(P(0,0),P(0,a[j].b[w/3%3]),a[j].b[(w/3%3+2)%3],a[j].b[(w/3%3+1)%3],f);
+                vector<double> d;
+                for(int i=0;i<(int)e.size();i++)
+                    for(int j=0;j<(int)f.size();j++)
+                        d.pb((e[i]-f[j]).abs());
+                sort(d.begin(),d.end()),
+                d.erase(unique(d.begin(),d.end(),equ),d.end());
+                for(int k=0;k<4;k++)if(k!=i&&k!=j)
+                    for(int l=k+1;l<4;l++)if(l!=i&&l!=j)
+                    {
+                        if(tri(a[k].b[w/9%3],a[l].b[w/27%3],a[i].b[w%3]-eps))S=min(S,7);
+                        if(equ(a[k].b[w/9%3],a[l].b[w/27%3]))
+                        {
+                            e.clear(),f.clear();
+                            geti(P(0,0),P(0,a[k].b[w/9%3]),a[k].b[(w/9%3+1)%3],a[k].b[(w/9%3+2)%3],e),
+                            geti(P(0,0),P(0,a[k].b[w/9%3]),a[k].b[(w/9%3+2)%3],a[k].b[(w/9%3+1)%3],e),
+                            geti(P(0,0),P(0,a[l].b[w/27%3]),a[l].b[(w/27%3+1)%3],a[l].b[(w/27%3+2)%3],f),
+                            geti(P(0,0),P(0,a[l].b[w/27%3]),a[l].b[(w/27%3+2)%3],a[l].b[(w/27%3+1)%3],f);
+                            for(int k=0;k<(int)e.size();k++)
+                                for(int l=0;l<(int)f.size();l++)
+                                    for(int w=0;w<(int)d.size();w++)
+                                        if(equ((e[k]-f[l]).abs(),d[w]))S=min(S,6);
+                        }
+                    }
+            }
+    printf("%d\n",S);
+    return 0;
+}
+2023-10-09 17:17:14 - eval_wizardcoder_opt_replenish.py - INFO - input tokens: 3072
+2023-10-09 17:17:14 - eval_wizardcoder_opt_replenish.py - WARNING - Over input tokens limit ---- lang: GNU C++, src_uid: 369f37d3487ba8c158e24f5ca759287b
+2023-10-09 17:17:27 - eval_wizardcoder_opt_replenish.py - ERROR - Failed to generate text: RetryError[<Future at 0x7efff4563fd0 state=finished raised RuntimeError>]
+2023-10-09 17:17:27 - eval_wizardcoder_opt_replenish.py - ERROR - the 0th response is None, optimization_0 is set to empty string
+2023-10-09 17:17:27 - eval_wizardcoder_opt_replenish.py - INFO - optimization_0: 
+2023-10-09 17:17:27 - eval_wizardcoder_opt_replenish.py - ERROR - the 1th response is None, optimization_1 is set to empty string
+2023-10-09 17:17:27 - eval_wizardcoder_opt_replenish.py - INFO - optimization_1: 
+2023-10-09 17:17:27 - eval_wizardcoder_opt_replenish.py - ERROR - the 2th response is None, optimization_2 is set to empty string
+2023-10-09 17:17:27 - eval_wizardcoder_opt_replenish.py - INFO - optimization_2: 
+2023-10-09 17:17:27 - eval_wizardcoder_opt_replenish.py - ERROR - the 3th response is None, optimization_3 is set to empty string
+2023-10-09 17:17:27 - eval_wizardcoder_opt_replenish.py - INFO - optimization_3: 
+2023-10-09 17:17:27 - eval_wizardcoder_opt_replenish.py - ERROR - the 4th response is None, optimization_4 is set to empty string
+2023-10-09 17:17:27 - eval_wizardcoder_opt_replenish.py - INFO - optimization_4: 
+2023-10-09 17:17:27 - eval_wizardcoder_opt_replenish.py - INFO - 
+start mem optimizing for src_uid=1d73b315694f2ebbf796654193372730, lang=GNU C++
+2023-10-09 17:17:27 - eval_wizardcoder_opt_replenish.py - INFO - unoptimized code:
+ /*
+Anton Gulikov
+*/
+#include <iostream>
+#include <fstream>
+#include <stack>
+#include <cstdlib>
+#include <cmath>
+#include <string>
+#include <set>
+#include <map>
+#include <vector>
+#include <algorithm>
+#include <ctime>
+#include <cassert>
+#include <stdio.h>
+#include <queue>
+
+#define mp make_pair
+#define pb push_back
+#define foru(i,n) for(int i = 0; i < n; i++)
+#define ford(i,n) for(int i = n - 1; i >= 0; i++)
+#define forab(i,l,r) for(int i = l; i <= r; i++)
+#define forabd(i,r,l) for(inr i = r; i >= l; i--)
+#define sqr(x) ((x) * (x))
+
+
+const long long base = 1000000000 + 7;
+
+using namespace std;
+
+typedef pair <int,int> pii;
+#define prev sdeigijodfgijs
+#define X first
+#define Y second
+
+
+char area[55][55];
+
+int area2[55][55];
+int used[55][55];
+pii prev[55][55];
+
+int go[4][2] = {{0,1},{1,0},{0,-1},{-1,0}};
+int leng[55*55];
+int ccnt[55*55];
+
+void solve(){
+
+   int n,m,k;
+   cin >> n >> m >> k;
+   int si = -1, sj = -1, ti = -1, tj = -1;
+   for (int i = 0; i < n; i++)
+      for (int j = 0; j < m; j++)
+      {
+         cin >> area[i][j];
+         if (area[i][j] == 'S') {si = i; sj = j;}
+         if (area[i][j] == 'T') {ti = i; tj = j;}
+         area2[i][j] = (int)area[i][j] - 'a';
+         if (area[i][j] == 'S') area2[i][j] = -2;
+         if (area[i][j] == 'T') area2[i][j] = -1;
+      }
+   assert(si != -1 && ti != -1);
+   int F = 1;
+   for (int i = 0; i < n; i++)
+      for (int j = 0; j < m; j++)
+         used[i][j] = 0;
+   string res = "";
+   swap(si,ti);
+   swap(sj,tj);
+   int len = (int)1e9;
+   for (int a = 0; a < 26; a++)
+      for (int b = a+(int)(k>1); b < 26; b++)
+         for (int c = b+(int)(k>2); c < 26; c++)
+            for (int d = c+(int)(k>3); d < 26; d++)
+            {
+               
+              int ch[4] = {a,b,c,d};
+              for (int i = k; i < 4; i++) ch[i] = ch[k-1];
+            //  ch[0] = 0; ch[1] = 1; ch[2] = 1; ch[3] = 1;
+              F++; 
+              priority_queue<pair <int, pair <int, pair< int, pair <int, int> > > >  > q;
+              q.push(mp(0,mp(0,mp(0,mp(si,sj)))));
+              used[si][sj] = F;
+              int poss = (1<<ch[0]) | (1<<ch[1]) | (1<<ch[2]) | (1<<ch[3]);              
+              while (!q.empty())
+              {
+                 pair <int, pair <int, pair < int, pair <int, int> > > > u = q.top();                 
+             //    cout << u.X << " " << u.Y.X << " " << u.Y.Y.X << " " << u.Y.Y.Y << endl;
+                 q.pop();
+                 if (leng[-u.X] != F){
+                 	leng[-u.X] = F;
+                 	ccnt[-u.X + 1] = 0;
+                 }
+                 pair<int, pii> goal[4];
+                 int cnt = 0;
+
+                 for (int i = 0; i < 4; i++)
+                 {
+                    pii to = mp(u.Y.Y.Y.X + go[i][0], u.Y.Y.Y.Y + go[i][1]);
+                    if (to.X >= 0 && to.X < n && to.Y >= 0 && to.Y < m && used[to.X][to.Y] != F
+                        && ( area2[to.X][to.Y] == -2 || (poss & (1<<(area2[to.X][to.Y]))) ) ) goal[cnt++] = mp(area2[to.X][to.Y],to);
+                 }
+                 for (int i = 0; i < cnt; i++)
+                 {
+                 	if (used[goal[i].Y.X][goal[i].Y.Y] == F) continue;
+                    used[goal[i].Y.X][goal[i].Y.Y] = F;
+                    prev[goal[i].Y.X][goal[i].Y.Y] = u.Y.Y.Y;
+                    ccnt[-u.X+1]++;
+                    q.push(mp(u.X - 1, mp(-goal[i].X,mp(-ccnt[-u.X+1],mp(goal[i].Y.X,goal[i].Y.Y)))));
+                 }
+              }
+              //return;
+
+              if (used[ti][tj] != F) continue;
+              string ans = "";
+              pii c = prev[ti][tj];
+              while (1)
+              {
+                 if (c == mp(si, sj)) break;                                            
+                 ans.pb(area[c.X][c.Y]);                
+                 c = prev[c.X][c.Y];                  
+              }
+           //   reverse(ans.begin(),ans.end());
+              if (len > (int)ans.size())
+              {
+                 len = ans.size();
+                 res = ans;         
+              }
+              else if (len == (int)ans.size() && ans < res) res = ans;
+            }
+  if (len < n*m*2) cout << res << endl;
+  else cout << -1 << endl; 
+
+}
+
+int main(){
+	ios_base :: sync_with_stdio(false);
+	int test = 1;
+	while (test--){
+		solve();
+	}
+	return 0;
+}
+2023-10-09 17:17:27 - eval_wizardcoder_opt_replenish.py - INFO - input tokens: 2169
+2023-10-09 17:17:27 - eval_wizardcoder_opt_replenish.py - WARNING - Over input tokens limit ---- lang: GNU C++, src_uid: 1d73b315694f2ebbf796654193372730
+2023-10-09 17:17:42 - eval_wizardcoder_opt_replenish.py - ERROR - Failed to generate text: RetryError[<Future at 0x7efff457e520 state=finished raised RuntimeError>]
+2023-10-09 17:17:42 - eval_wizardcoder_opt_replenish.py - ERROR - the 0th response is None, optimization_0 is set to empty string
+2023-10-09 17:17:42 - eval_wizardcoder_opt_replenish.py - INFO - optimization_0: 
+2023-10-09 17:17:42 - eval_wizardcoder_opt_replenish.py - ERROR - the 1th response is None, optimization_1 is set to empty string
+2023-10-09 17:17:42 - eval_wizardcoder_opt_replenish.py - INFO - optimization_1: 
+2023-10-09 17:17:42 - eval_wizardcoder_opt_replenish.py - ERROR - the 2th response is None, optimization_2 is set to empty string
+2023-10-09 17:17:42 - eval_wizardcoder_opt_replenish.py - INFO - optimization_2: 
+2023-10-09 17:17:42 - eval_wizardcoder_opt_replenish.py - ERROR - the 3th response is None, optimization_3 is set to empty string
+2023-10-09 17:17:42 - eval_wizardcoder_opt_replenish.py - INFO - optimization_3: 
+2023-10-09 17:17:42 - eval_wizardcoder_opt_replenish.py - ERROR - the 4th response is None, optimization_4 is set to empty string
+2023-10-09 17:17:42 - eval_wizardcoder_opt_replenish.py - INFO - optimization_4: 
+2023-10-09 17:17:42 - eval_wizardcoder_opt_replenish.py - INFO - 
+start mem optimizing for src_uid=566adc43d2d6df257c26c5f5495a5745, lang=GNU C++
+2023-10-09 17:17:42 - eval_wizardcoder_opt_replenish.py - INFO - unoptimized code:
+ #include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+#define bublic public
+#define clr(x) memset((x), 0, sizeof(x))
+#define all(x) (x).begin(), (x).end()
+#define pb push_back
+#define mp make_pair
+#define sz size()
+#define For(i, st, en) for(int i=(st); i<=(int)(en); i++)
+#define Ford(i, st, en) for(int i=(st); i>=(int)(en); i--)
+#define forn(i, n) for(int i=0; i<(int)(n); i++)
+#define ford(i, n) for(int i=(n)-1; i>=0; i--)
+#define fori(it, x) for (__typeof((x).begin()) it = (x).begin(); it != (x).end(); it++)
+
+template <class _T> inline _T sqr(const _T& x) { return x * x; }
+template <class _T> inline string tostr(const _T& a) { ostringstream os(""); os << a; return os.str(); }
+
+typedef long double ld;
+
+// Constants
+const ld PI = 3.1415926535897932384626433832795;
+const ld EPS = 1e-11;
+
+// Types
+typedef signed   long long i64;
+typedef unsigned long long u64;
+typedef set < int > SI;
+typedef vector < int > VI;
+typedef map < string, int > MSI;
+typedef pair < int, int > PII;
+
+#define BASE 10000
+
+int bb[1024000];
+int nn[1024000];
+int c;
+char sb[1024000];
+char sn[1024000];
+int ps[128];
+int cs[128];
+int as[128];
+int ind[128];
+int fc;
+
+int modak(int *a, int k)
+{
+	int j = 0;
+	Ford(i, a[0], 1)
+	{
+		j = ((i64)j * BASE + a[i]) % k;
+	}
+	return j;
+}
+
+int mypow(int a, int k, int p)
+{
+	int ans = 1;
+	int j = 1 << 30;
+	while (j)
+	{
+		ans = (i64)ans * ans % p;
+		if (j & k) ans = (i64)ans * a % p;
+		j >>= 1;
+	}
+	return ans;
+}
+
+int toint(int *a)
+{
+	if (a[0] > 3 || (a[0] == 3 && a[a[0]] > 10)) return 1000000001;
+	int x = 0;
+	Ford(i, a[0], 1)
+	{
+		x = x * BASE + a[i];
+	}
+	return min(x, 1000000001);
+}
+
+int calc(int p, int k)
+{
+	int ans = 1;
+	int r = 1;
+	forn(i, k)
+	{
+		r *= p;
+	}
+
+	int fc = p-1;
+	forn(i, k-1)
+	{
+		fc *= p;
+	}
+	int nnn = toint(nn);
+//	cerr << "r = " << r << endl;
+//	cerr << "fc = " << fc << endl;
+	int b1 = modak(bb, r);
+//	cerr << bb[0] << " " << bb[1] << endl;
+//	cerr << "b1 = " << b1 << endl;
+	ans = (i64)ans * (b1-1+r) % r;
+	if (b1 % p == 0)
+	{
+		if (nnn > k)
+		{
+			return 0;
+		}
+		else
+		{
+//			cerr << "ans = " << ans << endl;
+			ans = (i64)ans * mypow(b1, nnn-1, r) % r;
+//			cerr << "ans = " << ans << endl;
+		}
+	}
+	else
+	{
+		int t = (modak(nn, fc) - 1 + fc) % fc;
+//		cerr << "t = " << t << endl;
+		ans = (i64)ans * mypow(b1, t, r) % r;
+	}
+
+	return ans;
+}
+
+bool cmp(int p1, int p2)
+{
+	return pow(ps[p1], cs[p1]) > pow(ps[p2], cs[p2]);
+}
+
+int main()
+{
+#ifdef ROOM_311
+	freopen("input.txt", "rt", stdin);
+	freopen("output.txt", "wt", stdout);
+#endif
+	cout << setiosflags(ios::fixed) << setprecision(10);
+
+	clr(bb);
+	clr(nn);
+	scanf("%s%s%d", sb, sn, &c);
+	if (c == 1)
+	{
+		puts("1");
+		return 0;
+	}
+	int lb = strlen(sb);
+	int ln = strlen(sn);
+	bb[0] = (lb + 3) / 4;
+	nn[0] = (ln + 3) / 4;
+	For(i, 1, bb[0])
+	{
+		forn(j, 4)
+		{
+			bb[i] = bb[i] * 10 + ((lb - i * 4 + j >= 0) ? (sb[lb - i * 4 + j] - '0') : 0);
+		}
+	}
+	For(i, 1, nn[0])
+	{
+		forn(j, 4)
+		{
+			nn[i] = nn[i] * 10 + ((ln - i * 4 + j >= 0) ? (sn[ln - i * 4 + j] - '0') : 0);
+		}
+	}
+	fc = 1;
+	int x = c;
+	int m = 0;
+	for(int i = 2; i * i <= x; i++)
+	{
+		if (x % i == 0)
+		{
+			x /= i;
+			fc *= i-1;
+			ps[m] = i;
+			cs[m] = 1;
+			while (x % i == 0)
+			{
+				x /= i;
+				fc *= i;
+				cs[m]++;
+			}
+			m++;
+		}
+	}
+	if (x > 1)
+	{
+		ps[m] = x;
+		cs[m] = 1;
+		m++;
+		fc *= x-1;
+		x /= x;
+	}
+
+	forn(i, m)
+	{
+		as[i] = calc(ps[i], cs[i]);
+		ind[i] = i;
+	}
+	sort(ind, ind+m, cmp);
+	int ans = as[ind[0]];
+	int r = 1;
+	forn(j, cs[ind[0]])
+	{
+		r *= ps[ind[0]];
+	}
+	For(i1, 1, m-1)
+	{
+		int i = ind[i1];
+		int z = 1;
+		forn(j, cs[i])
+		{
+			z *= ps[i];
+		}
+		while (ans % z != as[i]) ans += r;
+		r *= z;
+	}
+//	forn(i, m)
+//	{
+//		cerr << ps[i] << " " << cs[i] << " " << as[i] << endl;
+//	}
+
+	if (ans <= 0) ans += c;
+
+	printf("%d\n", ans);
+
+	return 0;
+}
+
+2023-10-09 17:17:42 - eval_wizardcoder_opt_replenish.py - INFO - input tokens: 2408
+2023-10-09 17:17:42 - eval_wizardcoder_opt_replenish.py - WARNING - Over input tokens limit ---- lang: GNU C++, src_uid: 566adc43d2d6df257c26c5f5495a5745
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - ERROR - Failed to generate text: RetryError[<Future at 0x7efff9eca8e0 state=finished raised RuntimeError>]
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - ERROR - the 0th response is None, optimization_0 is set to empty string
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - INFO - optimization_0: 
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - ERROR - the 1th response is None, optimization_1 is set to empty string
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - INFO - optimization_1: 
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - ERROR - the 2th response is None, optimization_2 is set to empty string
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - INFO - optimization_2: 
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - ERROR - the 3th response is None, optimization_3 is set to empty string
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - INFO - optimization_3: 
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - ERROR - the 4th response is None, optimization_4 is set to empty string
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - INFO - optimization_4: 
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - INFO - =====start time optimiing=====
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - INFO - 
+start time optimizting for src_uid=1ae2942b72ebb7c55359c41e141900d7, lang=Python 3
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - INFO - unoptimized code:
+ '''
+def main():
+	from sys import stdin,stdout
+if __name__=='__main__':
+	main()
+'''
+#Journey to moon
+'''
+def main():
+	from sys import stdin,stdout
+	import collections
+	N,I =map(int,stdin.readline().split())
+	visited=list(0 for x in range(N))
+	G=collections.defaultdict(list)
+	groups=[0]
+	for _ in range(I):
+		a,b=map(int,stdin.readline().split())
+		G[a].append(b)
+		G[b].append(a)
+	q=collections.deque()
+	flag=0
+	for i in range(N):
+		if not visited[i]:
+			q.append(i)
+			visited[i]=flag+1
+			groups[flag]+=1
+			while len(q):
+				top=q.popleft()
+				for j in G[top]:
+					if visited[j]!=visited[top]:
+						visited[j]=flag+1
+						groups[flag]+=1
+						q.append(j)
+			flag+=1
+			groups.append(0)
+	counter=0
+	for i in range(len(groups)-1):
+		for j in range(i+1,len(groups)):
+			counter+=groups[i]*groups[j]
+	stdout.write(str(counter))
+if __name__=='__main__':
+	main()
+'''
+#Djikstra's
+'''
+import collections
+class Graph:
+	def __init__(self):
+		self.nodes=set()
+		self.edges=collections.defaultdict(list)
+		self.distances = {}
+
+	def add_node(self, value):
+		self.nodes.add(value)
+
+	def add_edge(self, from_node, to_node, distance):
+		self.edges[from_node].append(to_node)
+		self.edges[to_node].append(from_node)
+		self.distances[(from_node, to_node)] = distance
+		self.distances[(to_node, from_node)] = distance
+
+
+def dijsktra(graph, initial):
+	visited = {initial: 0}
+	path = {}
+
+	nodes = set(graph.nodes)
+
+	while nodes:
+		min_node = None
+		for node in nodes:
+			if node in visited:
+				if min_node is None:
+					min_node = node
+				elif visited[node] < visited[min_node]:
+					min_node = node
+
+		if min_node is None:
+			break
+
+		nodes.remove(min_node)
+		current_weight = visited[min_node]
+
+		for edge in graph.edges[min_node]:
+			weight = current_weight + graph.distances[(min_node, edge)]
+			if edge not in visited or weight < visited[edge]:
+				visited[edge] = weight
+				path[edge] = min_node
+
+	return visited, path
+
+def main():
+	from sys import stdin,stdout
+	for _ in range(int(stdin.readline())):
+		n,m=map(int,stdin.readline().split())
+		G=Graph()
+		for i in range(n):
+			G.add_node(i+1)
+		for i in range(m):
+			a,b,c=map(int,stdin.readline().split())
+			G.add_edge(a,b,c)
+		initial=int(stdin.readline())
+		v,p=dijsktra(G, initial)
+		#print(v)
+		#print(p)
+		for i in range(1,n+1):
+			if i!=initial:
+				k=v.get(i,-1)
+				stdout.write(str(k)+' ')
+		stdout.write('\n')
+if __name__=='__main__':
+	main()
+'''
+#Larget pallindrome in String
+'''
+def main():
+	from sys import stdin,stdout
+	string=stdin.readline().strip()
+	l=len(string)
+	#Triangle logic	
+	
+	arrlen=(l*(l-1))//2
+	arr=list(0 for x in range(arrlen))
+	f=0
+	c=l-1
+	for i in range(l-1):
+		for j in range(i+1,l):
+			if string[i]==string[j]:
+				arr[f+j-i-1]=1
+		f+=c
+		c-=1
+	#print(arr)
+	if any(arr):
+		
+	else:
+		if l & 1:
+			stdout.write('First')
+		else:
+			stdout.write('Second')
+	#2-d Array Logic
+	arr=list(list(0 for i in range(l)) for j in range(l))
+	for i in range(l):
+		for j in range(l):
+			if string[i]==string[j]:
+				arr[i][j]=1
+	maxim=0
+	for i in range(0,l*(l-1)-2,l+1):
+		a,b=i+1,i+2
+		#print(a,b)
+		acount=0
+		x=a//5
+		y=a%5
+		acount=arr[x][y]		
+		x-=1
+		y-=1
+		while x>=0 and y>=0:
+			acount+=arr[x][y]
+			x-=1
+			y-=1
+		x=b//5
+		y=b%5
+		bcount=arr[x][y]		
+		x-=1
+		y-=1
+		while x>=0 and y>=0:
+			bcount+=arr[x][y]
+			x-=1
+			y-=1
+		maxim=max((acount,bcount,maxim))
+	maxim=max(maxim,arr[l-2][l-1])
+	maxim=(maxim<<1)^1
+	delta=l-maxim
+	if delta & 1:
+		stdout.write('Second')
+	else:
+		stdout.write('First')
+if __name__=='__main__':
+	main()
+'''
+#276B
+'''
+def main():
+	from sys import stdin,stdout
+	import collections
+	s=stdin.readline().strip()
+	count=collections.Counter(s)
+	l=list(filter(lambda x: count[x] & 1,list(x for x in count)))
+	removed=sum(list(count[x] for x in l))-max(list(count[x] for x in l)+[0])
+	if removed & 1:
+		stdout.write('Second')
+	else:
+		stdout.write('First')
+if __name__=='__main__':
+	main()
+'''
+#362B
+'''
+def main():
+	from sys import stdin,stdout
+	n,m=map(int,stdin.readline().split())
+	if m:
+		dirty=sorted(map(int,stdin.readline().split()))
+		if dirty[0]==1 or dirty[-1]==n:
+			stdout.write('NO')
+		else:
+			flag=True
+			for i in range(m-2):
+				if dirty[i+1]==dirty[i]+1 and dirty[i+2]==dirty[i]+2:
+					flag=False
+					break
+			if flag:
+				stdout.write('YES')
+			else:
+				stdout.write('NO')
+	else:
+		stdout.write('YES')
+if __name__=='__main__':
+	main()
+'''
+#279B SUM OF SUB-ARRAY
+'''
+def main():
+	from sys import stdin,stdout
+	n,t=map(int,stdin.readline().split())
+	arr=list(map(int,stdin.readline().split()))
+	maxim=0
+	curr_sum=arr[0]
+	i=0
+	j=1
+	if curr_sum <=t:
+		count=1
+	else:
+		curr_sum=0
+		count=0
+		i=1
+		j=2
+	while j<n:
+		if curr_sum+arr[j]<=t:
+			count+=1
+			curr_sum+=arr[j]
+			j+=1
+		else:
+			maxim=max(count,maxim)
+			if curr_sum:
+				curr_sum-=arr[i]
+				count-=1
+			else:
+				j+=1
+			i+=1
+	maxim=max(count,maxim)
+	stdout.write(str(maxim))
+if __name__=='__main__':
+	main()
+'''
+#469B
+'''
+def main():
+	from sys import stdin,stdout
+	p,q,l,r=map(int,stdin.readline().split())
+	a=[]
+	b=[]
+	visited=list(0 for x in range(r-l+1))
+	#print(visited)	
+	for i in range(p):
+		x,y=map(int,stdin.readline().split())
+		a.append(x)
+		b.append(y)
+	for i in range(q):
+		x,y=map(int,stdin.readline().split())
+		x+=l
+		y+=l
+		for j in range(p):
+			#print('x=',x,'y=',y)
+			lower=max(0,a[j]-y)
+			upper=min(b[j]-x,r)+1
+			if upper > lower:
+				delta=upper-lower
+				#print('upper=',upper,'lower=',lower)
+				visited[lower:upper]=list(1 for x in range(delta))
+				#print('visited:\n',visited)
+	#	print(visited)
+	stdout.write(str(visited[:r-l+1].count(1)))
+if __name__=='__main__':
+	main()
+'''
+'''
+def main():
+	from sys import stdin,stdout
+	#import numpy as np
+	n,k=map(int,stdin.readline().split())
+	a=tuple(map(int,stdin.readline().split()))
+	minim=min(a)
+	maxim=max(a)
+	arr=list(a)	
+	for i in range(n):
+		arr[i]-=minim
+	if max(arr) > k:
+		stdout.write('NO')
+	else:
+		stdout.write('YES\n')
+		for i in a:
+			stdout.write('1 '*minim)
+			for j in range(i-minim):
+				stdout.write(str(j%k+1)+' ')
+			stdout.write('\n')
+if __name__=='__main__':
+	main()
+'''
+'''
+def main():
+	from sys import stdin,stdout
+	n,p=[],[]
+	for _ in range(int(stdin.readline())):
+		last=int(stdin.readline())
+		if last<0:
+			n.append(-1*last)
+		else:
+			p.append(last)
+	if sum(p)>sum(n):
+		stdout.write('first')
+	elif sum(n)>sum(p):
+		stdout.write('second')
+	else:
+		maxim=max(n,p)
+		#print(maxim)
+		if maxim==p:
+			if maxim==n:
+				if last<0:
+					stdout.write('second')
+				else:
+					stdout.write('first')
+			else:
+				stdout.write('first')
+		else:
+			stdout.write('second')
+		
+if __name__=='__main__':
+	main()
+'''
+#286C
+'''
+def main():
+	from sys import stdin,stdout
+	m,n=map(int,stdin.readline().split())
+	minim=min(m,n)
+	stdout.write(str(minim+1)+'\n')
+	if n==minim:
+		for i in range(minim+1):
+			stdout.write(str(m)+' '+str(i)+'\n')
+			m-=1
+	else:
+		for i in range(minim+1):
+			stdout.write(str(i)+' '+str(n)+'\n')
+			n-=1
+if __name__=='__main__':
+	main()
+'''
+#387B
+'''
+def main():
+	from sys import stdin,stdout
+	n,m=map(int,stdin.readline().split())
+	a=tuple(map(int,stdin.readline().split()))
+	b=tuple(map(int,stdin.readline().split()))
+	i=0
+	j=0
+	while True:
+		#print(i,j)
+		if i>=n or j>=m:
+			break
+		if b[j]>=a[i]:
+			i+=1
+			j+=1
+		else:
+			j+=1
+	stdout.write(str(n-i))
+if __name__=='__main__':
+	main()
+'''
+#365B
+'''
+def main():
+	from sys import stdin,stdout
+	n=int(stdin.readline())
+	a=tuple(map(int,stdin.readline().split()))
+	maxim=2
+	count=2
+	i=2
+	while True:
+		if i>=n:
+			break
+		if a[i]==a[i-1]+a[i-2]:
+			count+=1
+			maxim=max(count,maxim)
+		else:
+			count=2
+		i+=1
+	stdout.write(str(min(maxim,n)))
+if __name__=='__main__':
+	main()
+'''	#474D
+'''
+def main():
+	from sys import stdin,stdout
+	MOD=int(1e9)+7
+	T,k=map(int,stdin.readline().split())
+	fib=[x for x in range(1,k+1)]
+	for i in range(k,100001):
+		fib.append((fib[i-1]+fib[i-k]+1)%MOD)
+	for _ in range(T):
+		a,b=map(int,stdin.readline().split())
+		stdout.write(str((fib[b]-fib[a-1])%MOD)+'\n')
+if __name__=='__main__':
+	main()
+'''
+#330B
+#not working
+'''
+def main():
+	from sys import stdin,stdout
+	import collections
+	road_not=collections.defaultdict(set)
+	n,m=map(int,stdin.readline().split())
+	for _ in range(m):
+		a,b=map(int,stdin.readline().split())
+		road_not[a].add(b)
+		road_not[b].add(a)
+	counter=0
+	road=collections.defaultdict(set)
+	visited=[0 for x in range(n)]
+	visited[0]=True
+	for index in range(1,n+1):
+		for i in range(1,n+1):
+			if not visited[i-1]:
+				if i not in road_not[index] and i!=index:
+					counter+=1
+					road[index].add(i)
+					visited[i-1]=True
+	stdout.write(str(counter)+'\n')
+	for i in road:
+		for j in road[i]:
+			stdout.write(str(i)+' '+str(j)+'\n')
+if __name__=='__main__':
+	main()
+'''
+#208D
+def main():
+	from sys import stdin,stdout
+	import bisect
+	n=int(stdin.readline())
+	p=tuple(map(int,stdin.readline().split()))
+	P=tuple(map(int,stdin.readline().split()))
+	record=[0 for x in range(5)]
+	points=0
+	for i in p:
+		points+=i
+		while points>=P[0]:
+			index=bisect.bisect_right(P,points)
+			if index:
+				index-=1
+				number=points//P[index]
+				record[index]+=number
+				points-=P[index]*number
+	for i in record:
+		stdout.write(str(i)+' ')
+	stdout.write('\n'+str(points))
+if __name__=='__main__':
+	main()
+
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - INFO - input tokens: 4511
+2023-10-09 17:18:07 - eval_wizardcoder_opt_replenish.py - WARNING - Over input tokens limit ---- lang: Python 3, src_uid: 1ae2942b72ebb7c55359c41e141900d7
+2023-10-09 17:18:22 - eval_wizardcoder_opt_replenish.py - ERROR - Failed to generate text: RetryError[<Future at 0x7efff4584cd0 state=finished raised OutOfMemoryError>]
+2023-10-09 17:18:22 - eval_wizardcoder_opt_replenish.py - ERROR - the 0th generated sequence is None, optimization_0 is set to empty string
+2023-10-09 17:18:22 - eval_wizardcoder_opt_replenish.py - INFO - optimization_0: 
+2023-10-09 17:18:22 - eval_wizardcoder_opt_replenish.py - ERROR - the 1th generated sequence is None, optimization_1 is set to empty string
+2023-10-09 17:18:22 - eval_wizardcoder_opt_replenish.py - INFO - optimization_1: 
+2023-10-09 17:18:22 - eval_wizardcoder_opt_replenish.py - ERROR - the 2th generated sequence is None, optimization_2 is set to empty string
+2023-10-09 17:18:22 - eval_wizardcoder_opt_replenish.py - INFO - optimization_2: 
+2023-10-09 17:18:22 - eval_wizardcoder_opt_replenish.py - ERROR - the 3th generated sequence is None, optimization_3 is set to empty string
+2023-10-09 17:18:22 - eval_wizardcoder_opt_replenish.py - INFO - optimization_3: 
+2023-10-09 17:18:22 - eval_wizardcoder_opt_replenish.py - ERROR - the 4th generated sequence is None, optimization_4 is set to empty string
+2023-10-09 17:18:22 - eval_wizardcoder_opt_replenish.py - INFO - optimization_4: 
+2023-10-09 17:18:22 - eval_wizardcoder_opt_replenish.py - INFO - 
+start time optimizting for src_uid=00480885be97002dca98fe98a4238aee, lang=GNU C++
+2023-10-09 17:18:22 - eval_wizardcoder_opt_replenish.py - INFO - unoptimized code:
+ #include <iostream>
+#include <vector>
+
+using namespace std;
+
+typedef long long int ll;
+
+const int limite=1000000;
+
+int n;
+vector<pair<int,int> > g[limite];
+ll numnodos[limite];
+ll precomputo[limite];
+
+int nc=0,lenc=0;
+int c[limite];
+ll d[limite];
+
+int cc[limite];
+int dd[limite];
+int visto[limite];
+
+bool buscaciclo(int u,int p,int prof)
+{
+  if (visto[u]) {
+    int icc=prof-1;
+    while (cc[icc]!=u) icc--;
+    for (int i=icc;i<prof;i++) {
+      c[i-icc]=cc[i];
+      d[i-icc]=dd[i];
+      nc++;
+      lenc+=dd[i];
+    }
+    return true;
+  }
+  visto[u]=1;
+  cc[prof]=u;
+  vector<pair<int,int> > &ar=g[u];
+  for (int i=0;i<int(ar.size());i++) {
+    int v=ar[i].first;
+    dd[prof]=ar[i].second;
+    if (v!=p and buscaciclo(v,u,prof+1))
+      return true;
+  }
+  return false;
+}
+
+void eliminaadyacente(int u,int elim)
+{
+  vector<pair<int,int> > &ar=g[u];
+  vector<pair<int,int> > nextar;
+  for (int i=0;i<int(ar.size());i++)
+    if (elim!=ar[i].first)
+      nextar.push_back(ar[i]);
+  ar=nextar;
+}
+
+void quitapadre(int u,int p)
+{
+  vector<pair<int,int> > &ar=g[u];
+  vector<pair<int,int> > nextar;
+  for (int i=0;i<int(ar.size());i++) {
+    int v=ar[i].first;
+    if (v!=p) {
+      nextar.push_back(ar[i]);
+      quitapadre(v,u);
+    }
+  }
+  ar=nextar;
+}
+
+void precomputa(int u)
+{
+  vector<pair<int,int > > &ar=g[u];
+  numnodos[u]=1;
+  for (int i=0;i<int(ar.size());i++) {
+    int v=ar[i].first;
+    ll t=ar[i].second;
+    precomputa(v);
+    numnodos[u]+=numnodos[v];
+    precomputo[u]+=precomputo[v]+numnodos[v]*t;
+  }
+}
+
+ll precomputodebajo(int ic)
+{
+  int u=c[ic];
+  vector<pair<int,int> > &ar=g[u];
+  ll pre=0;
+  for (int i=0;i<int(ar.size());i++) {
+    int v=ar[i].first;
+    ll t=ar[i].second;
+    if (v!=c[(ic+1)%nc] and v!=c[(ic-1+nc)%nc])
+      pre+=precomputo[v]+numnodos[v]*t;
+  }
+  return pre;
+}
+
+ll numnodosdebajo(int ic)
+{
+  int u=c[ic];
+  vector<pair<int,int> > &ar=g[u];
+  ll num=0;
+  for (int i=0;i<int(ar.size());i++) {
+    int v=ar[i].first;
+    if (v!=c[(ic+1)%nc] and v!=c[(ic-1+nc)%nc])
+      num+=numnodos[v];
+  }
+  return num;
+}
+
+ll sol[limite];
+
+void calcula(int u,ll computoabove)
+{
+  //cout<<"calculamos "<<u<<endl;
+  vector<pair<int,int> > &ar=g[u];
+  sol[u]=computoabove+precomputo[u];
+  for (int i=0;i<int(ar.size());i++) {
+    int v=ar[i].first;
+    ll t=ar[i].second;
+    calcula(v,sol[u]-(precomputo[v]+numnodos[v]*t)+(n-numnodos[v])*t);
+  }
+}
+
+int main()
+{
+  ios::sync_with_stdio(false);
+  cin>>n;
+  for (int i=0;i<n;i++) {
+    int u,v,t;
+    cin>>u>>v>>t;
+    g[u].push_back(pair<int,int> (v,t));
+    g[v].push_back(pair<int,int> (u,t));
+  }
+  buscaciclo(1,0,0);
+  eliminaadyacente(c[0],c[1]);
+  eliminaadyacente(c[1],c[0]);
+  quitapadre(c[0],0);
+  precomputa(c[0]);
+  int ri=0;
+  int lenri=0;
+  ll nodri=numnodosdebajo(0)+1;
+  ll computori=precomputodebajo(0);
+  ll computole=precomputo[c[0]]-computori;
+  //cout<<"inicio "<<nodri<<" "<<computori<<" "<<computole<<endl;
+  for (int i=0;i<nc;i++) {
+    int u=c[i];
+    //cout<<"ciclo "<<i<<" "<<u<<" "<<ri<<" "<<nodri<<" "<<computori<<" "<<computole<<endl;
+    while (2*(lenri+d[ri])<=lenc) {
+      lenri+=d[ri];
+      ri=(ri+1)%nc;
+      ll comp=precomputodebajo(ri);
+      ll numn=numnodosdebajo(ri);
+      nodri+=numn+1;
+      computori+=comp+(numn+1)*lenri;
+      computole-=comp+(numn+1)*(lenc-lenri);
+    }
+    //cout<<"despues "<<ri<<" "<<c[ri]<<" "<<nodri<<" "<<computori<<" "<<computole<<endl;
+    sol[u]=computori+computole;
+    vector<pair<int,int> > &ar=g[u];
+    for (int j=0;j<int(ar.size());j++) {
+      int v=ar[j].first;
+      ll t=ar[j].second;
+      if (v!=c[(i+1)%nc] and v!=c[(i-1+nc)%nc])
+	calcula(v,computori+computole-(precomputo[v]+numnodos[v]*t)+(n-numnodos[v])*t);
+    }
+    ll comp=precomputodebajo(i);
+    ll numn=numnodosdebajo(i);
+    //cout<<"debajo "<<comp<<" "<<numn<<" "<<d[i]<<endl;
+    computori-=comp;
+    nodri-=numn+1;
+    computori-=nodri*d[i];
+    computole+=comp+(n-nodri)*d[i];
+    lenri-=d[i];
+  }
+  for (int u=1;u<=n;u++) {
+    if (u>1) cout<<" ";
+    cout<<sol[u];
+  }
+  cout<<endl;
+}
+
+2023-10-09 17:18:22 - eval_wizardcoder_opt_replenish.py - INFO - input tokens: 2465
+2023-10-09 17:18:22 - eval_wizardcoder_opt_replenish.py - WARNING - Over input tokens limit ---- lang: GNU C++, src_uid: 00480885be97002dca98fe98a4238aee
+2023-10-09 17:18:29 - eval_wizardcoder_opt_replenish.py - ERROR - Failed to generate text: RetryError[<Future at 0x7efff4584ac0 state=finished raised RuntimeError>]
+2023-10-09 17:18:29 - eval_wizardcoder_opt_replenish.py - ERROR - the 0th generated sequence is None, optimization_0 is set to empty string
+2023-10-09 17:18:29 - eval_wizardcoder_opt_replenish.py - INFO - optimization_0: 
+2023-10-09 17:18:29 - eval_wizardcoder_opt_replenish.py - ERROR - the 1th generated sequence is None, optimization_1 is set to empty string
+2023-10-09 17:18:29 - eval_wizardcoder_opt_replenish.py - INFO - optimization_1: 
+2023-10-09 17:18:29 - eval_wizardcoder_opt_replenish.py - ERROR - the 2th generated sequence is None, optimization_2 is set to empty string
+2023-10-09 17:18:29 - eval_wizardcoder_opt_replenish.py - INFO - optimization_2: 
+2023-10-09 17:18:29 - eval_wizardcoder_opt_replenish.py - ERROR - the 3th generated sequence is None, optimization_3 is set to empty string
+2023-10-09 17:18:29 - eval_wizardcoder_opt_replenish.py - INFO - optimization_3: 
+2023-10-09 17:18:29 - eval_wizardcoder_opt_replenish.py - ERROR - the 4th generated sequence is None, optimization_4 is set to empty string
+2023-10-09 17:18:29 - eval_wizardcoder_opt_replenish.py - INFO - optimization_4: 
+2023-10-09 17:18:29 - eval_wizardcoder_opt_replenish.py - INFO - 
+start time optimizting for src_uid=369f37d3487ba8c158e24f5ca759287b, lang=GNU C++
+2023-10-09 17:18:29 - eval_wizardcoder_opt_replenish.py - INFO - unoptimized code:
+ #include <vector>
+#include <list>
+#include <map>
+#include <set>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <bitset>
+#include <algorithm>
+#include <functional>
+#include <numeric>
+#include <utility>
+#include <sstream>
+#include <iostream>
+#include <iomanip>
+#include <cstdio>
+#include <cmath>
+#include <cstdlib>
+#include <cctype>
+#include <string>
+#include <cstring>
+#include <cstdio>
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
+#include <string.h>
+
+using namespace std;
+
+const double eps=1e-9;
+
+struct Point
+{
+	double x,y;
+	Point(double _x=0,double _y=0) { x=_x; y=_y; }
+};
+
+int result;
+Point p[4][3],e[4][3],pts[12];
+double dst[12][12];
+int permutation[4];
+
+void rotate(Point &p,double d)
+{
+	double cosd=cos(d);
+	double sind=sin(d);
+	double x=p.x*cosd-p.y*sind;
+	double y=p.x*sind+p.y*cosd;
+	p.x=x;
+	p.y=y;
+}
+double ppDistance(const Point &a,const Point &b)
+{
+	double dx=a.x-b.x;
+	double dy=a.y-b.y;
+	return sqrt(dx*dx+dy*dy);
+}
+double sqr(double x)
+{
+	return x*x;
+}
+int getIntersect(double X1,double Y1,double R1,double X2,double Y2,double R2,Point &P,Point &Q)
+{
+	double dst=ppDistance(Point(X1,Y1),Point(X2,Y2));
+	if (dst>R1+R2+eps || dst<fabs(R1-R2)-eps) return 0;
+	if (dst<=eps) return 0;
+	//(x-X1)^2+(y-Y1)^2=sqr(R1)=x^2-2*X1*x+X1^2+y^2-2*Y1*y+Y1^2 (1)
+	//(x-X2)^2+(y-Y2)^2=sqr(R2)=x^2-2*X2*x+X2^2+y^2-2*Y2*y+Y2^2 (2)
+	//(2)-(1):  sqr(R2)-sqr(R1)=2*(X1-X2)*x+2*(Y1-Y2)*y+sqr(X2)-sqr(X1)+sqr(Y2)-sqr(Y1)
+	//	 :  (X1-X2)*x+(Y1-Y2)*y-(sqr(X1)-sqr(X2)+sqr(Y1)-sqr(Y2)-sqr(R1)+sqr(R2))/2.0;
+	double a=X1-X2;
+	double b=Y1-Y2;
+	double c=-(a*(X1+X2)+b*(Y1+Y2)-sqr(R1)+sqr(R2))/2.0;
+	double CX=X1,CY=Y1;
+	//ax+by+c=0
+	//(+by+c+aCX)^2+(ay-aCY)^2=(aR)^2
+	double x1,y1,x2,y2;
+	if (fabs(a)>fabs(b))
+	{
+		double A=sqr(a)+sqr(b);
+		double B=2.0*b*(c+a*CX)-2.0*sqr(a)*CY;
+		double C=sqr(c+a*CX)+sqr(a)*(sqr(CY)-sqr(R1));
+		double delta=sqr(B)-4*A*C;
+		if (delta<-eps) return 0;
+		if (delta<0) delta=0;
+		delta=sqrt(delta);
+		y1=(-B+delta)/(2*A);x1=(-c-b*y1)/a;
+		y2=(-B-delta)/(2*A);x2=(-c-b*y2)/a;
+		P.x=x1;P.y=y1;
+		Q.x=x2;Q.y=y2;
+	}
+	else
+	{
+		swap(a,b);swap(CX,CY);
+		double A=sqr(a)+sqr(b);
+		double B=2.0*b*(c+a*CX)-2.0*sqr(a)*CY;
+		double C=sqr(c+a*CX)+sqr(a)*(sqr(CY)-sqr(R1));
+		double delta=sqr(B)-4*A*C;
+		if (delta<-eps) return 0;
+		if (delta<0) delta=0;
+		delta=sqrt(delta);
+		y1=(-B+delta)/(2*A);x1=(-c-b*y1)/a;
+		y2=(-B-delta)/(2*A);x2=(-c-b*y2)/a;
+		swap(x1,y1);swap(x2,y2);
+		swap(a,b);swap(CX,CY);
+		P.x=x1;P.y=y1;
+		Q.x=x2;Q.y=y2;
+	}
+	return 2;
+}
+void DFS(int d)
+{
+	if (d==3)
+	{
+		int m=0;
+		for (int i=0;i<d;i++) for (int j=0;j<3;j++)
+		{
+			bool is_exists=false;
+			for (int k=0;!is_exists && k<m;k++) if (fabs(e[i][j].x-pts[k].x)<=eps && fabs(e[i][j].y-pts[k].y)<=eps) is_exists=true;
+			if (!is_exists) pts[m++]=e[i][j];
+		}
+		if (m>=result) return;
+		if (m+2<result) 
+		{
+			result=m+2;
+			//printf("res = %d\n",result);
+		}
+		double l1=ppDistance(p[d][0],p[d][1]);
+		double l2=ppDistance(p[d][0],p[d][2]);
+		double l3=ppDistance(p[d][1],p[d][2]);
+		for (int i=0;i<m;i++) for (int j=0;j<m;j++) dst[i][j]=(i==j)?0:((i>j)?dst[j][i]:ppDistance(pts[i],pts[j]));
+		for (int i=0;i<m;i++) for (int j=i+1;j<m;j++) if (fabs(dst[i][j]-l1)<=eps) for (int k=0;k<m;k++) 
+			if (fabs(dst[i][k]-l2)<=eps && fabs(dst[j][k]-l3)<=eps || fabs(dst[i][k]-l3)<=eps && fabs(dst[j][k]-l2)<=eps)
+			{
+				result=m;
+				//printf("res = %d\n",result);
+				return;
+			}
+		if (m+1>=result) return;
+		for (int i=0;i<m;i++) for (int j=i+1;j<m;j++) if (fabs(dst[i][j]-l1)<=eps || fabs(dst[i][j]-l2)<=eps || fabs(dst[i][j]-l3)<=eps)
+		{
+			result=m+1;
+			//printf("res = %d\n",result);
+			return;
+		}
+		return;
+	}
+	bool dup[12];
+	memset(dup,false,sizeof(dup));
+	for (int i=0;i<d*3;i++) for (int j=i+1;j<d*3;j++) 
+	{
+		Point p1=e[i/3][i%3];
+		Point p2=e[j/3][j%3];
+		if (fabs(p1.x-p2.x)<=eps && fabs(p1.y-p2.y)<=eps) dup[j]=true;
+	}
+	for (int i=0;i<d*3;i++) if (!dup[i]) for (int j=0;j<d*3;j++) if (!dup[j]) 
+	{
+		if (i==j) continue;
+		Point p1=e[i/3][i%3];
+		Point p2=e[j/3][j%3];
+		if (fabs(p1.x-p2.x)<=eps && fabs(p1.y-p2.y)<=eps) continue;
+		Point g1=Point(p[d][1].x-p[d][0].x,p[d][1].y-p[d][0].y);
+		Point g2=Point(p[d][2].x-p[d][0].x,p[d][2].y-p[d][0].y);
+		double rot=atan2(p2.y-p1.y,p2.x-p1.x)-atan2(g1.y,g1.x);
+		rotate(g1,rot);
+		rotate(g2,rot);
+		e[d][0]=p1;
+		e[d][1]=Point(p1.x+g1.x,p1.y+g1.y);
+		e[d][2]=Point(p1.x+g2.x,p1.y+g2.y);
+		DFS(d+1);
+	}
+	if (d==1 && permutation[1]<permutation[2])
+		for (int i=0;i<d*3;i++) if (!dup[i]) for (int j=0;j<d*3;j++) if (!dup[j])
+		{
+			if (i==j) continue;
+			Point p1=e[i/3][i%3];
+			Point p2=e[j/3][j%3];
+			if (fabs(p1.x-p2.x)<=eps && fabs(p1.y-p2.y)<=eps) continue;
+			double l1=ppDistance(p[d][0],p[d][1]);
+			double l2=ppDistance(p[d+1][0],p[d+1][1]);
+			Point h[2];
+			int c=getIntersect(p1.x,p1.y,l1,p2.x,p2.y,l2,h[0],h[1]);
+			for (int k=0;k<c;k++)
+			{
+				Point g1=Point(p[d][1].x-p[d][0].x,p[d][1].y-p[d][0].y);
+				Point g2=Point(p[d][2].x-p[d][0].x,p[d][2].y-p[d][0].y);
+				double rot=atan2(h[k].y-p1.y,h[k].x-p1.x)-atan2(g1.y,g1.x);
+				rotate(g1,rot);
+				rotate(g2,rot);
+				e[d][0]=p1;
+				e[d][1]=Point(p1.x+g1.x,p1.y+g1.y);
+				e[d][2]=Point(p1.x+g2.x,p1.y+g2.y);
+				DFS(d+1);
+			}
+		}
+	if (d==2 && permutation[2]<permutation[3])
+	{
+		int m=0;
+		for (int i=0;i<d;i++) for (int j=0;j<3;j++)
+		{
+			bool is_exists=false;
+			for (int k=0;!is_exists && k<m;k++) if (fabs(e[i][j].x-pts[k].x)<=eps && fabs(e[i][j].y-pts[k].y)<=eps) is_exists=true;
+			if (!is_exists) pts[m++]=e[i][j];
+		}
+		for (int i=0;i<m;i++) for (int j=0;j<m;j++) if (i!=j) for (int k=0;k<3;k++)
+		{
+			Point p1=pts[i];
+			Point p2=pts[j];
+			if (fabs(p1.x-p2.x)<=eps && fabs(p1.y-p2.y)<=eps) continue;
+			double l1=ppDistance(p[d][0],p[d][1]);
+			double l2=ppDistance(p[d+1][k],p[d+1][(k+1)%3]);
+			Point h[2];
+			int c=getIntersect(p1.x,p1.y,l1,p2.x,p2.y,l2,h[0],h[1]);
+			for (int u=0;u<c;u++)
+			{
+				Point g1=Point(p[d][1].x-p[d][0].x,p[d][1].y-p[d][0].y);
+				Point g2=Point(p[d][2].x-p[d][0].x,p[d][2].y-p[d][0].y);
+				double rot=atan2(h[u].y-p1.y,h[u].x-p1.x)-atan2(g1.y,g1.x);
+				rotate(g1,rot);
+				rotate(g2,rot);
+				e[d][0]=p1;
+				e[d][1]=Point(p1.x+g1.x,p1.y+g1.y);
+				e[d][2]=Point(p1.x+g2.x,p1.y+g2.y);
+				DFS(d+1);
+			}
+		}
+	}
+}
+int main()
+{
+#ifdef _MSC_VER
+	freopen("input.txt","r",stdin);
+#endif
+	Point a[4][3];
+	for (int i=0;i<4;i++) for (int j=0;j<3;j++)
+	{
+		double x,y;
+		scanf("%lf%lf",&x,&y);
+		a[i][j]=Point(x,y);
+	}
+	result=12;
+	for (int i=0;i<4;i++) permutation[i]=i;
+	do{
+		for (int mset=0;mset<(1<<3);mset+=2) for (int set=0;set<(1<<3);set+=2) for (int rot=0;rot<27;rot+=3)
+		{
+			for (int i=0;i<4;i++) for (int j=0;j<3;j++) p[i][j]=a[permutation[i]][j];
+			for (int i=0;i<4;i++) if (mset&(1<<i)) for (int j=0;j<3;j++) p[i][j].x=-p[i][j].x;
+			for (int state=rot,i=0;i<4;i++,state/=3) for (int j=0;j<state%3;j++)
+			{
+				Point t=p[i][0];
+				p[i][0]=p[i][1];
+				p[i][1]=p[i][2];
+				p[i][2]=t;
+			}
+			for (int i=0;i<4;i++) if (set&(1<<i)) swap(p[i][1],p[i][2]);
+			for (int j=0;j<3;j++) e[0][j]=p[0][j];
+			DFS(1);
+		}
+	}while (next_permutation(permutation+1,permutation+4)!=0);
+	printf("%d\n",result);
+	return 0;
+}
+2023-10-09 17:18:29 - eval_wizardcoder_opt_replenish.py - INFO - input tokens: 4434
+2023-10-09 17:18:29 - eval_wizardcoder_opt_replenish.py - WARNING - Over input tokens limit ---- lang: GNU C++, src_uid: 369f37d3487ba8c158e24f5ca759287b
+2023-10-09 17:18:43 - eval_wizardcoder_opt_replenish.py - ERROR - Failed to generate text: RetryError[<Future at 0x7efff458bd30 state=finished raised OutOfMemoryError>]
+2023-10-09 17:18:43 - eval_wizardcoder_opt_replenish.py - ERROR - the 0th generated sequence is None, optimization_0 is set to empty string
+2023-10-09 17:18:43 - eval_wizardcoder_opt_replenish.py - INFO - optimization_0: 
+2023-10-09 17:18:43 - eval_wizardcoder_opt_replenish.py - ERROR - the 1th generated sequence is None, optimization_1 is set to empty string
+2023-10-09 17:18:43 - eval_wizardcoder_opt_replenish.py - INFO - optimization_1: 
+2023-10-09 17:18:43 - eval_wizardcoder_opt_replenish.py - ERROR - the 2th generated sequence is None, optimization_2 is set to empty string
+2023-10-09 17:18:43 - eval_wizardcoder_opt_replenish.py - INFO - optimization_2: 
+2023-10-09 17:18:43 - eval_wizardcoder_opt_replenish.py - ERROR - the 3th generated sequence is None, optimization_3 is set to empty string
+2023-10-09 17:18:43 - eval_wizardcoder_opt_replenish.py - INFO - optimization_3: 
+2023-10-09 17:18:43 - eval_wizardcoder_opt_replenish.py - ERROR - the 4th generated sequence is None, optimization_4 is set to empty string
+2023-10-09 17:18:43 - eval_wizardcoder_opt_replenish.py - INFO - optimization_4: 
+2023-10-09 17:18:43 - eval_wizardcoder_opt_replenish.py - INFO - 
+start time optimizting for src_uid=dfd0814d912a7f2dfe31744ad1c778ae, lang=GNU C++
+2023-10-09 17:18:43 - eval_wizardcoder_opt_replenish.py - INFO - unoptimized code:
+ #pragma comment(linker, "/stack:64000000")
+#define _CRT_SECURE_NO_DEPRECATE
+#define _USE_MATH_DEFINES
+
+#include <algorithm>
+#include <iostream>
+#include <fstream>
+#include <cassert>
+#include <iomanip>
+#include <utility>
+#include <cstring>
+#include <complex>
+#include <cstdlib>
+#include <bitset>
+#include <cstdio>
+#include <vector>
+#include <string>
+#include <queue>
+#include <cmath>
+#include <ctime>
+#include <list>
+#include <set>
+#include <map>
+
+using namespace std;
+
+#define forn(i, n) for (int i = 0; i < int(n); i++)
+#define ford(i, n) for (int i = int(n) - 1; i >= 0; i--)
+#define for1(i, n) for (int i = 1; i <= int(n); i++)
+#define correct(x, y, n, m) (0 <= (x) && (x) < (n) && 0 <= (y) && (y) < (m))
+#define debug(x) cerr << #x << " = " << x << endl;
+#define all(a) (a).begin(), (a).end()
+#define rall(a) (a).rbegin(), (a).rend()
+#define sz(a) int((a).size())
+#define pb(a) push_back(a)
+#define mp(a, b) make_pair((a), (b))
+#define X first
+#define Y second
+#define ft first
+#define sc second
+
+template<typename X> inline X abs(const X& a) { return a < 0? -a: a; }
+template<typename X> inline X sqr(const X& a) { return a * a; }
+
+typedef long double ld;
+typedef pair<ld, ld> ptd;
+typedef pair <int, int> pt;
+typedef long long li;
+typedef unsigned char byte;
+
+const ld PI = 3.1415926535897932384626433832795;
+const ld EPS = 1e-9;
+const int INF = 1000 * 1000 * 1000;
+
+const int N = 150 + 13;
+
+int n;
+int a[N];
+char s[N];
+int p[N][N];
+int z[N][N][N];
+int d[N][N];
+
+int calcZ (int, int, int);
+
+int calcD (int lf, int rg)
+{
+    int& ans = d[lf][rg];
+    if (ans != -1) return ans;
+    
+    ans = -2;
+    
+    for (int mid = lf; mid < rg; mid++)
+    {
+        int t1 = calcD(lf, mid), t2 = calcD(mid + 1, rg);
+        if (t1 != -2 && t2 != -2)
+            ans = max(ans, t1 + t2);
+    }
+    
+    if (s[lf] == s[rg])
+    {
+        for (int len = 1; len <= rg - lf + 1; len++)
+        {
+            if (a[len] == -1) continue;
+            
+            int t = calcZ(lf + 1, rg - 1, len - 1 - (lf != rg));
+            if (t == -2) continue;
+            
+            ans = max(ans, t + a[len]);
+        }
+    }
+    
+    return ans;
+}
+
+int calcZ (int lf, int rg, int len)
+{
+    int& ans = z[lf][rg][len];
+    if (ans != -1) return ans;
+    
+    if (lf > rg)
+        return ans = (len == 0 ? 0 : -2);
+        
+    if (len == 0)
+        return ans = calcD(lf, rg);
+        
+    ans = -2;
+        
+    for (int mid = lf; mid <= rg; mid++)
+    {
+        if (mid != rg)
+        {
+            int t1 = calcZ(lf, mid, len);
+            int t2 = calcD(mid + 1, rg);
+            if (t1 != -2 && t2 != -2)
+                ans = max(ans, t1 + t2);            
+        }
+        
+        if (mid != lf)
+        {
+            int t1 = calcD(lf, mid - 1);
+            int t2 = calcZ(mid, rg, len);
+            if (t1 != -2 && t2 != -2)
+                ans = max(ans, t1 + t2);
+        }
+    }
+    
+    if (s[lf] == s[rg])
+        ans = max(ans, calcZ(lf + 1, rg - 1, len - 1 - (lf != rg)));
+    
+    return ans;
+}
+
+int calcP (int lf, int rg)
+{
+    int& ans = p[lf][rg];
+    if (ans != -1) return ans;
+    
+    ans = 0;
+    
+    for (int i = lf; i < rg; i++)
+        ans = max(ans, calcP(lf, i) + calcP(i + 1, rg));
+        
+    if (s[lf] == s[rg])
+    {
+        for (int len = 1; len <= rg - lf + 1; len++)
+        {
+            if (a[len] == -1) continue;
+                
+            int t = calcZ(lf + 1, rg - 1, len - 1 - (lf != rg));
+            
+            if (t == -2) continue;
+            
+            ans = max(ans, t + a[len]);
+        }
+    }
+        
+    return ans;
+}
+
+int main()
+{
+    //freopen("input.txt", "rt", stdin);
+    //freopen("output.txt", "wt", stdout);
+    
+    cin >> n;
+    
+    for1(i, n)
+        scanf("%d", &a[i]);
+        
+    scanf("%s", s);
+    
+    memset(p, -1, sizeof(p));
+    memset(z, -1, sizeof(z));
+    memset(d, -1, sizeof(d));
+    
+    cout << calcP(0, n - 1) << endl;
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2023-10-09 17:18:43 - eval_wizardcoder_opt_replenish.py - INFO - input tokens: 2070
+2023-10-09 17:18:43 - eval_wizardcoder_opt_replenish.py - WARNING - Over input tokens limit ---- lang: GNU C++, src_uid: dfd0814d912a7f2dfe31744ad1c778ae
+2023-10-09 17:19:05 - eval_wizardcoder_opt_replenish.py - ERROR - Failed to generate text: RetryError[<Future at 0x7efff9e8c8e0 state=finished raised RuntimeError>]
+2023-10-09 17:19:05 - eval_wizardcoder_opt_replenish.py - ERROR - the 0th generated sequence is None, optimization_0 is set to empty string
+2023-10-09 17:19:05 - eval_wizardcoder_opt_replenish.py - INFO - optimization_0: 
+2023-10-09 17:19:05 - eval_wizardcoder_opt_replenish.py - ERROR - the 1th generated sequence is None, optimization_1 is set to empty string
+2023-10-09 17:19:05 - eval_wizardcoder_opt_replenish.py - INFO - optimization_1: 
+2023-10-09 17:19:05 - eval_wizardcoder_opt_replenish.py - ERROR - the 2th generated sequence is None, optimization_2 is set to empty string
+2023-10-09 17:19:05 - eval_wizardcoder_opt_replenish.py - INFO - optimization_2: 
+2023-10-09 17:19:05 - eval_wizardcoder_opt_replenish.py - ERROR - the 3th generated sequence is None, optimization_3 is set to empty string
+2023-10-09 17:19:05 - eval_wizardcoder_opt_replenish.py - INFO - optimization_3: 
+2023-10-09 17:19:05 - eval_wizardcoder_opt_replenish.py - ERROR - the 4th generated sequence is None, optimization_4 is set to empty string
+2023-10-09 17:19:05 - eval_wizardcoder_opt_replenish.py - INFO - optimization_4: 
+2023-10-09 17:19:05 - eval_wizardcoder_opt_replenish.py - INFO - 
+start time optimizting for src_uid=970cd8ce0cf7214b7f2be337990557c9, lang=GNU C++
+2023-10-09 17:19:05 - eval_wizardcoder_opt_replenish.py - INFO - unoptimized code:
+ #include <iostream>
+#include <stdio.h>
+#include <map>
+#include <vector>
+#include <utility>
+
+using namespace std;
+
+int get_cur_sum ( char* buf, int num )
+{
+	int sum = 0;
+	for ( int i = 0; i < num; i++ )
+	  {
+		if ( buf[i] == '(' )
+			sum++;
+		else if ( buf[i] == ')' )
+			sum--;
+	  }
+	return sum;
+}
+
+int main ()
+{
+	char* buf = new char[50001];
+	scanf ( "%s", buf );
+	char* cur_pos = buf;
+	map<int, pair<int, int> > in_cost; // initial cost
+	int num_ask = 0, sum_init = 0;
+	int len;
+	bool debug = false;
+	for ( len = 0; cur_pos[len] != 0; len++ )
+	  {
+		if ( cur_pos[len] == '?' )
+		  {
+			num_ask++;
+			int oc = 0, cc = 0;
+			cin >> oc >> cc;
+			if ( cc == 100 )
+				debug = false;
+			pair<int, int> p ( oc, cc );
+			in_cost[len] = p;
+		  }
+		else if ( cur_pos[len] == '(' )
+			sum_init++;
+		else if ( cur_pos[len] == ')' )
+			sum_init--;
+	  }
+	if ( sum_init > num_ask || - sum_init > num_ask )
+	  {
+		cout << -1 << endl;
+		return 0;
+	  }
+	map<int, vector<int> > olc, clc; // open lowest cost, close lowest cost
+	map<int, pair<int, int> >::iterator it;
+	long long int tot_c = 0;
+	for ( it = in_cost.begin(); it != in_cost.end(); it++ )
+	  {
+		int oc = it->second.first, cc = it->second.second;
+		int i = it->first;
+		//map<int, pair<int, int> >::iterator temp_it = it;
+		//temp_it++;
+		//int next_i = len;
+		//if ( temp_it != in_cost.end() )
+		//next_i = temp_it->first;
+		num_ask--;
+		//int sum_cur = get_cur_sum ( cur_pos, i );
+		//int sum_next = get_cur_sum ( cur_pos, next_i );
+		//int sum_min = sum_cur;
+		//if ( sum_min > sum_next )
+		//sum_min = sum_next;
+		//if ( sum_cur == 0 )
+		//{
+		//clc.clear();
+		//}
+		if ( i == 0 )
+		  {
+			cur_pos[i] = '(';
+			tot_c += oc;
+			//if ( sum_min > 0 )
+			//clc[cc-oc+1].push_back ( i );
+			//sum_min++;
+			sum_init++;
+			continue;
+		  }
+		if ( i == len - 1 )
+		  {
+			cur_pos[i] = ')';
+			tot_c += cc;
+			//sum_min--;
+			sum_init--;
+			//olc[oc-cc+1].push_back ( i );
+			continue;
+		  }
+		if ( oc > cc )
+		  {
+			cur_pos[i] = ')';
+			tot_c += cc;
+			//sum_min--;
+			sum_init--;
+			olc[oc-cc+1].push_back ( i );
+		  }
+		else
+		  {
+			cur_pos[i] = '(';
+			tot_c += oc;
+			//if ( sum_min > 0 )
+			clc[cc-oc+1].push_back ( i );
+			//sum_min++;
+			sum_init++;
+		  }
+		/*map<int, vector<int> >::iterator it_in;
+		vector<int>::reverse_iterator it_in2;
+		while ( sum_min < 0 )
+		  {
+			it_in = olc.begin();
+			it_in2 = it_in->second.rbegin();
+			int i_in = *it_in2;
+			int c_in = it_in->first - 1;
+			cur_pos[i_in] = '(';
+			tot_c += c_in;
+			sum_init += 2;
+			sum_min += 2;
+			it_in->second.erase ( --(it_in2.base()) );
+			if ( it_in->second.size ( ) == 0 )
+				olc.erase ( it_in );
+			clc.clear ( );
+		  }
+		if ( sum_init > num_ask )
+		  {
+			if ( i != len - 1 )
+			  {
+				it_in = clc.begin();
+				it_in2 = it_in->second.rbegin();
+			  }
+			else
+			  {
+				bool rflag = true;
+				for ( it_in = clc.begin(); it_in != clc.end(); it_in++ )
+				  {
+					for ( it_in2 = it_in->second.rbegin(); it_in2 != it_in->second.rend(); it_in2++ )
+					  {
+						if ( *it_in2 == i )
+						  {
+							rflag = false;
+							break;
+						  }
+					  }
+					if ( ! rflag )
+						break;
+				  }
+			  }
+			int i_in = *it_in2;
+			int c_in = it_in->first - 1;
+			cur_pos[i_in] = ')';
+			tot_c += c_in;
+			sum_init -= 2;
+			it_in->second.erase ( --(it_in2.base()) );
+			if ( it_in->second.size ( ) == 0 )
+				clc.erase ( it_in );
+			for ( int i_in2 = 1; i_in2 <= i; i_in2++ )
+				if ( get_cur_sum ( cur_pos, i_in2 + 1 ) == 0 )
+				  {
+					for ( it_in = clc.begin(); it_in != clc.end(); )
+					  {
+						for ( it_in2 = it_in->second.rbegin(); it_in2 != it_in->second.rend();  )
+						  {
+							if ( *it_in2 <= i_in2 + 1 )
+							  {
+								it_in->second.erase ( --(it_in2.base()) );
+								it_in2 = it_in->second.rbegin();
+							  }
+							else
+							  {
+								it_in2++;
+							  }
+						  }
+						if ( it_in->second.size ( ) == 0 )
+						  {
+							clc.erase ( it_in );
+							it_in = clc.begin();
+						  }
+						else
+						  {
+							it_in++;
+						  }
+					  }
+				  }
+		  }*/
+	  }
+	if ( sum_init > 0 )
+	  {
+		for ( int i = 0; sum_init != 0; i++ )
+		  {
+			map<int, vector<int> >::iterator it_in = clc.begin();
+			vector<int>::reverse_iterator it_in2 = it_in->second.rbegin();
+			int i_in = *it_in2;
+			int c_in = it_in->first - 1;
+			cur_pos[i_in] = ')';
+			tot_c += c_in;
+			sum_init -= 2;
+			it_in->second.erase ( --(it_in2.base()) );
+			if ( it_in->second.size ( ) == 0 )
+				clc.erase ( it_in );
+			olc[1-c_in].push_back ( i_in );
+		  }
+	  }
+	else if ( sum_init < 0 )
+	  {
+		for ( int i = 0; sum_init != 0; i++ )
+		  {
+			map<int, vector<int> >::iterator it_in = olc.begin();
+			vector<int>::iterator it_in2 = it_in->second.begin();
+			int i_in = *it_in2;
+			int c_in = it_in->first - 1;
+			cur_pos[i_in] = '(';
+			tot_c += c_in;
+			sum_init += 2;
+			it_in->second.erase ( it_in2 );
+			if ( it_in->second.size ( ) == 0 )
+				olc.erase ( it_in );
+			clc[1-c_in].push_back ( i_in );
+		  }
+	  }
+	int sum_cur = 0;
+	for ( int i = 0; i < len; i++ )
+	  {
+		if ( cur_pos[i] == '(' )
+			sum_cur++;
+		else
+			sum_cur--;
+		if ( sum_cur == -1 )
+		  {
+			map<int, vector<int> >::iterator it_in;
+			vector<int>::iterator it_in2;
+			bool sflag = false;
+			for ( it_in = olc.begin(); it_in != olc.end(); it_in++ )
+			  {
+				for ( it_in2 = it_in->second.begin(); it_in2 != it_in->second.end();  it_in2++ )
+				  {
+					if ( *it_in2 <= i )
+					  {
+						cur_pos[*it_in2] = '(';
+						sflag = true;
+						sum_cur += 2;
+						tot_c += it_in->first - 1;
+						if ( debug )
+							cout << i << 1 << endl;
+						it_in->second.erase ( it_in2 );
+						if ( debug )
+							cout << i << 2 << endl;
+						break;
+					  }
+				  }
+				if ( it_in->second.size ( ) == 0 )
+				  {
+					if ( debug )
+						cout << i << 3 << endl;
+					olc.erase ( it_in );
+					if ( debug )
+						cout << i << 4 << endl;
+				  }
+				if ( sflag )
+					break;
+			  }
+			if ( sflag == false )
+			  {
+				cout << -1 << endl;
+				return 0;
+			  }
+			sflag = false;
+			if ( debug )
+				cout << i << 5 << endl;
+			vector<int>::reverse_iterator it_in2r;
+			for ( it_in = clc.begin(); it_in != clc.end(); it_in++ )
+			  {
+				for ( it_in2r = it_in->second.rbegin(); it_in2r != it_in->second.rend(); it_in2r++ )
+				  {
+					if ( *it_in2r > i )
+					  {
+						cur_pos[*it_in2r] = ')';
+						sflag = true;
+						tot_c += it_in->first - 1;
+						olc[2-it_in->first].push_back ( *it_in2r );
+						if ( debug )
+							cout << i << 6 << endl;
+						it_in->second.erase ( --(it_in2r.base()) );
+						it_in2r = it_in->second.rbegin();
+						if ( debug )
+							cout << i << 7 << endl;
+						break;
+						if ( it_in->second.size ( ) == 0 )
+						  {
+							if ( debug )
+								cout << i << 8 << endl;
+							olc.erase ( it_in );
+							it_in = clc.begin();
+							if ( debug )
+								cout << i << 9 << endl;
+						  }
+					  }
+				  }
+				if ( sflag )
+					break;
+			  }
+			if ( debug )
+				cout << i << 1 << endl;
+			if ( sflag == false )
+			  {
+				cout << -1 << endl;
+				return 0;
+			  }			
+		  }
+		if ( debug )
+			cout << i << 0 << endl;
+	  }
+	cout << tot_c << endl;
+	cout << buf << endl;
+	return 0;
+}
+2023-10-09 17:19:05 - eval_wizardcoder_opt_replenish.py - INFO - input tokens: 3296
+2023-10-09 17:19:05 - eval_wizardcoder_opt_replenish.py - WARNING - Over input tokens limit ---- lang: GNU C++, src_uid: 970cd8ce0cf7214b7f2be337990557c9
+2023-10-09 17:19:22 - eval_wizardcoder_opt_replenish.py - ERROR - Failed to generate text: RetryError[<Future at 0x7efff9e8ee80 state=finished raised RuntimeError>]
+2023-10-09 17:19:22 - eval_wizardcoder_opt_replenish.py - ERROR - the 0th generated sequence is None, optimization_0 is set to empty string
+2023-10-09 17:19:22 - eval_wizardcoder_opt_replenish.py - INFO - optimization_0: 
+2023-10-09 17:19:22 - eval_wizardcoder_opt_replenish.py - ERROR - the 1th generated sequence is None, optimization_1 is set to empty string
+2023-10-09 17:19:22 - eval_wizardcoder_opt_replenish.py - INFO - optimization_1: 
+2023-10-09 17:19:22 - eval_wizardcoder_opt_replenish.py - ERROR - the 2th generated sequence is None, optimization_2 is set to empty string
+2023-10-09 17:19:22 - eval_wizardcoder_opt_replenish.py - INFO - optimization_2: 
+2023-10-09 17:19:22 - eval_wizardcoder_opt_replenish.py - ERROR - the 3th generated sequence is None, optimization_3 is set to empty string
+2023-10-09 17:19:22 - eval_wizardcoder_opt_replenish.py - INFO - optimization_3: 
+2023-10-09 17:19:22 - eval_wizardcoder_opt_replenish.py - ERROR - the 4th generated sequence is None, optimization_4 is set to empty string
+2023-10-09 17:19:22 - eval_wizardcoder_opt_replenish.py - INFO - optimization_4: 
+2023-10-09 17:19:22 - eval_wizardcoder_opt_replenish.py - INFO - 
+start time optimizting for src_uid=1d73b315694f2ebbf796654193372730, lang=GNU C++
+2023-10-09 17:19:22 - eval_wizardcoder_opt_replenish.py - INFO - unoptimized code:
+ #ifndef LOCAL_BOBER
+#pragma comment(linker, "/STACK:134217728")
+#endif
+
+#include <iostream>
+#include <cstdio>
+#include <cmath>
+#include <algorithm>
+#include <vector>
+#include <map>
+#include <set>
+#include <bitset>
+#include <queue>
+#include <stack>
+#include <sstream>
+#include <cstring>
+#include <numeric>
+#include <ctime>
+
+#define re return
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define all(x) (x).begin(), (x).end()
+#define sz(x) ((int) (x).size())
+#define rep(i, n) for (int i = 0; i < (n); i++)
+#define rrep(i, n) for (int i = (n) - 1; i >= 0; i--)
+#define y0 y32479
+#define y1 y95874
+#define fill(x, y) memset(x, y, sizeof(x))
+#define sqr(x) ((x) * (x))
+#define prev prev239
+#define next next239
+#define hash hash239
+#define rank rank239
+#define sqrt(x) sqrt(abs(x))
+
+using namespace std;
+
+typedef vector<int> vi;
+typedef vector<vi> vvi;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<string> vs;
+typedef long long ll;
+typedef double D;
+typedef long double LD;
+
+template<class T> T abs(T x) {return x > 0 ? x : -x;}
+
+int n;
+int m;
+
+int matr[50][50];
+
+bool cmp(string a, string b) {
+    if (sz(a) != sz(b))
+        re sz(a) < sz(b);
+    re a < b;
+}
+
+int x1, y1, x2, y2;
+int d[50][50];
+queue<ii> q;
+
+int dx[4] = {1, 0, -1, 0};
+int dy[4] = {0, 1, 0, -1};
+int mask;
+
+int good(int x, int y) {
+    re x >= 0 && x < n && y >= 0 && y < m && (mp(x1, y1) == mp(x, y) || mp(x2, y2) == mp(x, y) || ((1 << matr[x][y]) & mask) != 0);
+}
+
+void parse(ii o) {
+    int x = o.fi;
+    int y = o.se;
+    int dist = d[x][y];
+    rep(i, 4) {
+        int nx = x + dx[i];
+        int ny = y + dy[i];
+        if (good(nx, ny) && d[nx][ny] == -1) {
+            d[nx][ny] = dist + 1;
+            q.push(mp(nx, ny));
+        }
+    }
+}
+
+string getans(int mask) {
+    ::mask = mask;
+    fill(d, -1);
+    q.push(mp(x2, y2));
+    d[x2][y2] = 0;
+    while (!q.empty()) {
+        parse(q.front());
+        q.pop();
+    }
+    if (d[x1][y1] == -1)
+        re "-";
+    int cx = x1, cy = y1;
+    string ans = "";
+    vii v;
+    v.pb(mp(x1, y1));
+    vii tmp;
+    tmp.reserve(1000);
+    while (1) {
+        int dist = d[v[0].fi][v[0].se];
+        if (dist == 1)
+            break;
+        char bc = 'z' + 1;
+        rep(o, sz(v))
+        rep(i, 4) {
+            int nx = v[o].fi + dx[i];
+            int ny = v[o].se + dy[i];
+            if (good(nx, ny) && d[nx][ny] == dist - 1) {
+                if (matr[nx][ny] + 'a' < bc) {
+                    bc = matr[nx][ny] + 'a';
+                }
+            }
+        }
+        tmp.clear();
+        rep(o, sz(v))
+        rep(i, 4) {
+            int nx = v[o].fi + dx[i];
+            int ny = v[o].se + dy[i];
+            if (good(nx, ny) && d[nx][ny] == dist - 1) {
+                if (matr[nx][ny] + 'a' == bc) {
+                    tmp.pb(mp(nx, ny));
+                }
+            }
+        }
+        sort(all(tmp));
+        tmp.resize(unique(all(tmp)) - tmp.begin());
+        ans += bc;
+        v = tmp;
+    }
+
+    re ans;
+}
+
+int main() {
+#ifdef LOCAL_BOBER
+    freopen("input.txt", "r", stdin);
+    //freopen("output.txt", "w", stdout);
+#endif
+
+    int k;
+    scanf("%d%d%d", &n, &m, &k);
+    rep(i, n) {
+        char s[1000];
+        scanf("%s", s);
+        rep(j, m) {
+            matr[i][j] = s[j] - 'a';
+            if (s[j] == 'S') {
+                x1 = i;
+                y1 = j;
+            }
+            if (s[j] == 'T') {
+                x2 = i;
+                y2 = j;
+            }
+        }
+    }
+
+    vi v;
+    v.reserve(20000);
+    rep(i, (1 << 26)) {
+        if (__builtin_popcount(i) <= k)
+            v.pb(i);
+    }
+    string res = "-";
+    rep(i, sz(v)) {
+        string ans = getans(v[i]);
+        if (ans != "-")
+            if (res == "-" || cmp(ans, res))
+                res = ans;
+    }
+    if (res == "-")
+        cout << -1 << endl;
+    else
+        cout << res << endl;
+
+    re 0;
+}
+
+2023-10-09 17:19:22 - eval_wizardcoder_opt_replenish.py - INFO - input tokens: 2040
+2023-10-09 17:19:54 - eval_wizardcoder_opt_replenish.py - ERROR - Failed to generate text: RetryError[<Future at 0x7efff9eee9d0 state=finished raised RuntimeError>]
+2023-10-09 17:19:54 - eval_wizardcoder_opt_replenish.py - ERROR - the 0th generated sequence is None, optimization_0 is set to empty string
+2023-10-09 17:19:54 - eval_wizardcoder_opt_replenish.py - INFO - optimization_0: 
+2023-10-09 17:19:54 - eval_wizardcoder_opt_replenish.py - ERROR - the 1th generated sequence is None, optimization_1 is set to empty string
+2023-10-09 17:19:54 - eval_wizardcoder_opt_replenish.py - INFO - optimization_1: 
+2023-10-09 17:19:54 - eval_wizardcoder_opt_replenish.py - ERROR - the 2th generated sequence is None, optimization_2 is set to empty string
+2023-10-09 17:19:54 - eval_wizardcoder_opt_replenish.py - INFO - optimization_2: 
+2023-10-09 17:19:54 - eval_wizardcoder_opt_replenish.py - ERROR - the 3th generated sequence is None, optimization_3 is set to empty string
+2023-10-09 17:19:54 - eval_wizardcoder_opt_replenish.py - INFO - optimization_3: 
+2023-10-09 17:19:54 - eval_wizardcoder_opt_replenish.py - ERROR - the 4th generated sequence is None, optimization_4 is set to empty string
+2023-10-09 17:19:54 - eval_wizardcoder_opt_replenish.py - INFO - optimization_4: 
+2023-10-09 17:19:54 - eval_wizardcoder_opt_replenish.py - INFO - 
+start time optimizting for src_uid=ffa25047060e4741d8eddf2b91b1ca23, lang=GNU C++
+2023-10-09 17:19:54 - eval_wizardcoder_opt_replenish.py - INFO - unoptimized code:
+ #include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+#define clr(x) memset((x), 0, sizeof(x))
+#define pb push_back
+#define mp make_pair
+#define sz size()
+#define For(i, st, en) for(int i=(st); i<=(int)(en); i++)
+#define Ford(i, st, en) for(int i=(st); i>=(int)(en); i--)
+#define forn(i, n) for(int i=0; i<(int)(n); i++)
+#define ford(i, n) for(int i=(n)-1; i>=0; i--)
+#define fori(it, x) for (__typeof((x).begin()) it = (x).begin(); it != (x).end(); it++)
+
+template <class _T> inline _T sqr(const _T& x) { return x * x; }
+template <class _T> inline string tostr(const _T& a) { ostringstream os(""); os << a; return os.str(); }
+
+typedef long double ld;
+
+// Constants
+const ld PI = 3.1415926535897932384626433832795;
+const ld EPS = 1e-11;
+
+// Types
+typedef long long i64;
+typedef set < int > SI;
+typedef vector < int > VI;
+typedef map < string, int > MSI;
+typedef pair < int, int > PII;
+
+const int MID = 10001;
+
+int m;
+int l1, l2, p;
+int a1[20240];
+int a2[20240];
+int d[2][20240];
+unsigned int pa[10020][20240 >> 5];
+char ans[40240];
+
+inline int f(int x, int y)
+{
+	int r = a1[x] + a2[y];
+	if (r >= p) r -= p;
+	return r;
+}
+
+void solve()
+{
+	d[0][0] = f(0, 0);
+	clr(pa);
+	forn(j, l2-1)
+	{
+		d[0][j+1] = d[0][j] + f(0, j+1);
+	}
+	forn(i, l1 - 1)
+	{
+		int i1 = i & 1;
+		int in = i1 ^ 1;
+		memset(d[in], 0, sizeof(d[in]));
+		d[in][0] = d[i1][0] + f(i + 1, 0);
+		if (i+1 <= MID) pa[i+1][0 >> 5] |= 1 << 0;
+		forn(j, l2 - 1)
+		{
+			int t = f(i+1, j+1);
+//			if (d[in][j+1] < d[in][j] + t)
+//			{
+				d[in][j+1] = d[in][j] + t;
+//			}
+			if (d[in][j+1] < d[i1][j+1] + t)
+			{
+				d[in][j+1] = d[i1][j+1] + t;
+				if (i+1 <= MID) pa[i+1][(j+1) >> 5] |= (1 << (j+1));
+			}
+		}
+	}
+}
+
+void solve2()
+{
+	d[0][0] = f(0, 0);
+	clr(pa);
+	forn(j, l2-1)
+	{
+		d[0][j+1] = d[0][j] + f(0, j+1);
+	}
+	forn(i, l1 - 1)
+	{
+		int i1 = i & 1;
+		int in = i1 ^ 1;
+		memset(d[in], 0, sizeof(d[in]));
+		d[in][0] = d[i1][0] + f(i + 1, 0);
+		if (i+1 >= MID) pa[i+1-MID][0 >> 5] |= 1 << 0;
+		forn(j, l2 - 1)
+		{
+			int t = f(i+1, j+1);
+//			if (d[in][j+1] < d[in][j] + t)
+//			{
+				d[in][j+1] = d[in][j] + t;
+//			}
+			if (d[in][j+1] < d[i1][j+1] + t)
+			{
+				d[in][j+1] = d[i1][j+1] + t;
+				if (i+1 >= MID) pa[i+1-MID][(j+1) >> 5] |= (1 << (j+1));
+			}
+		}
+	}
+}
+
+int main()
+{
+#ifdef ROOM_311
+	freopen("input.txt", "rt", stdin);
+	time_t et_0 = clock();
+#else
+#endif
+	cout << setiosflags(ios::fixed) << setprecision(10);
+
+	scanf("%d%d%d", &l1, &l2, &p);
+	forn(i, l1)
+	{
+		scanf("%d", &a1[i]);
+		if (a1[i] > 20000) for(;;);
+		a1[i] %= p;
+	}
+	forn(i, l2)
+	{
+		scanf("%d", &a2[i]);
+		if (a2[i] > 20000) for(;;);
+		a2[i] %= p;
+	}
+/*	forn(i, l1)
+	{
+		forn(j, l2)
+		{
+			cerr << f(i, j) << " ";
+		}
+		cerr << endl;
+	}*/
+	clr(d);
+	solve2();
+	int xx = d[(l1 & 1) ^ 1][l2 - 1];
+	printf("%d\n", d[(l1 & 1) ^ 1][l2 - 1]);
+
+	m = 0;
+	int x = l1 - 1;
+	int y = l2 - 1;
+	bool ff = false;
+	while (x || y)
+	{
+		if (x <= MID && !ff)
+		{
+			solve();
+			ff = true;
+		}
+		int r = x <= MID ? ((pa[x][y >> 5] >> y) & 1) : ((pa[x - MID][y >> 5] >> y) & 1);
+		ans[m++] = r["SC"];
+		if (r) x--;
+		else y--;
+		if (x < 0 || y < 0) for(;;);
+	}
+	reverse(ans, ans+m);
+
+	if (m != l2 + l1 - 2) for(;;);
+	int ss = 0;
+	x = y = 0;
+	forn(i, l1+l2-2)
+	{
+		ss += f(x, y);
+		if (ans[i] == 'C') x++;
+		else y++;
+	}
+	ss += f(x, y);
+	if (ss != xx) for(;;);
+	ans[m] = '\0';
+	puts(ans);
+
+#ifdef ROOM_311
+	time_t et_1 = clock();
+	fprintf(stderr, "execution time = %0.0lf ms\n", (et_1 - et_0) * 1000.0 / CLOCKS_PER_SEC);
+#endif
+	return 0;
+}
+
+
+2023-10-09 17:19:54 - eval_wizardcoder_opt_replenish.py - INFO - input tokens: 2447
+2023-10-09 17:19:54 - eval_wizardcoder_opt_replenish.py - WARNING - Over input tokens limit ---- lang: GNU C++, src_uid: ffa25047060e4741d8eddf2b91b1ca23
+2023-10-09 17:20:05 - eval_wizardcoder_opt_replenish.py - ERROR - Failed to generate text: RetryError[<Future at 0x7efff9ebc8e0 state=finished raised RuntimeError>]
+2023-10-09 17:20:05 - eval_wizardcoder_opt_replenish.py - ERROR - the 0th generated sequence is None, optimization_0 is set to empty string
+2023-10-09 17:20:05 - eval_wizardcoder_opt_replenish.py - INFO - optimization_0: 
+2023-10-09 17:20:05 - eval_wizardcoder_opt_replenish.py - ERROR - the 1th generated sequence is None, optimization_1 is set to empty string
+2023-10-09 17:20:05 - eval_wizardcoder_opt_replenish.py - INFO - optimization_1: 
+2023-10-09 17:20:05 - eval_wizardcoder_opt_replenish.py - ERROR - the 2th generated sequence is None, optimization_2 is set to empty string
+2023-10-09 17:20:05 - eval_wizardcoder_opt_replenish.py - INFO - optimization_2: 
+2023-10-09 17:20:05 - eval_wizardcoder_opt_replenish.py - ERROR - the 3th generated sequence is None, optimization_3 is set to empty string
+2023-10-09 17:20:05 - eval_wizardcoder_opt_replenish.py - INFO - optimization_3: 
+2023-10-09 17:20:05 - eval_wizardcoder_opt_replenish.py - ERROR - the 4th generated sequence is None, optimization_4 is set to empty string
+2023-10-09 17:20:05 - eval_wizardcoder_opt_replenish.py - INFO - optimization_4: 
+2023-10-09 17:20:05 - eval_wizardcoder_opt_replenish.py - INFO - 
+start time optimizting for src_uid=1ae2942b72ebb7c55359c41e141900d7, lang=Mono C#
+2023-10-09 17:20:05 - eval_wizardcoder_opt_replenish.py - INFO - unoptimized code:
+ using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+
+namespace Temp
+{    
+    struct PointInt
+    {
+        public long X;
+
+        public long Y;
+
+        public PointInt(long x, long y)
+            : this()
+        {
+            this.X = x;
+            this.Y = y;
+        }
+
+        public static PointInt operator +(PointInt a, PointInt b)
+        {
+            return new PointInt(a.X + b.X, a.Y + b.Y);
+        }
+
+        public static PointInt operator -(PointInt a, PointInt b)
+        {
+            return new PointInt(a.X - b.X, a.Y - b.Y);
+        }
+
+        public static PointInt operator *(PointInt a, long k)
+        {
+            return new PointInt(k * a.X, k * a.Y);
+        }
+
+        public static PointInt operator *(long k, PointInt a)
+        {
+            return new PointInt(k * a.X, k * a.Y);
+        }
+
+        public bool IsInsideRectangle(long l, long b, long r, long t)
+        {
+            return (l <= X) && (X <= r) && (b <= Y) && (Y <= t);
+        }
+    }
+
+    struct LineInt
+    {
+        public LineInt(PointInt a, PointInt b)
+            : this()
+        {
+            A = a.Y - b.Y;
+            B = b.X - a.X;
+            C = a.X * b.Y - a.Y * b.X;
+        }
+
+        public long A, B, C;
+
+        public bool ContainsPoint(PointInt p)
+        {
+            return A * p.X + B * p.Y + C == 0;
+        }
+    }
+
+    class MatrixInt
+    {
+        private long[,] m_Matrix;
+
+        public int Size
+        {
+            get
+            {
+                return m_Matrix.GetLength(0) - 1;
+            }
+        }
+
+        public long Mod { get; private set; }
+
+        public MatrixInt(int size, long mod = 0)
+        {
+            m_Matrix = new long[size + 1, size + 1];
+            Mod = mod;
+        }
+
+        public MatrixInt(long[,] matrix, long mod = 0)
+        {
+            this.m_Matrix = matrix;
+            Mod = mod;
+        }
+
+        public static MatrixInt GetIdentityMatrix(int size, long mod = 0)
+        {
+            long[,] matrix = new long[size + 1, size + 1];
+
+            for (int i = 1; i <= size; i++)
+            {
+                matrix[i, i] = 1;
+            }
+
+            return new MatrixInt(matrix, mod);
+        }
+
+        public long this[int i, int j]
+        {
+            get
+            {
+                return m_Matrix[i, j];
+            }
+
+            set
+            {
+                m_Matrix[i, j] = value;
+            }
+        }
+
+        public static MatrixInt operator +(MatrixInt a, MatrixInt b)
+        {
+            int n = a.Size;
+            long mod = Math.Max(a.Mod, b.Mod);
+            long[,] c = new long[n, n];
+            for (int i = 1; i <= n; i++)
+            {
+                for (int j = 1; j <= n; j++)
+                {
+                    c[i, j] = a[i, j] + b[i, j];                    
+                }
+            }
+
+            if (mod > 0)
+            {
+                for (int i = 1; i <= n; i++)
+                {
+                    for (int j = 1; j <= n; j++)
+                    {
+                        c[i, j] %= mod;
+                    }
+                }
+            }
+
+            return new MatrixInt(c, mod);
+        }
+
+        public static MatrixInt operator *(MatrixInt a, MatrixInt b)
+        {
+            int n = a.Size;
+            long mod = Math.Max(a.Mod, b.Mod);
+
+            long[,] c = new long[n, n];
+
+            for (int i = 1; i <= n; i++)
+            {
+                for (int j = 1; j <= n; j++)
+                {
+                    for (int k = 1; k <= n; k++)
+                    {
+                        c[i, j] += a[i, k] * b[k, j];
+                        if (mod > 0)
+                        {
+                            c[i, j] %= mod;
+                        }
+                    }                    
+                }
+            }
+
+            return new MatrixInt(c, mod);
+        }
+    }
+
+    static class Algebra
+    {
+        public static long Phi(long n)
+        {
+            long result = n;
+            for (long i = 2; i * i <= n; i++)
+            {
+                if (n % i == 0)
+                {
+                    while (n % i == 0)
+                    {
+                        n /= i;
+                    }
+
+                    result -= result / i;
+                }
+            }
+
+            if (n > 1)
+            {
+                result -= result / n;
+            }
+
+            return result;
+        }
+
+        public static long BinPower(long a, long n, long mod)
+        {
+            long result = 1;
+
+            while (n > 0)
+            {
+                if ((n & 1) != 0)
+                {
+                    result = (result * a) % mod;
+                }
+
+                a = (a * a) % mod;
+                n >>= 1;
+            }
+
+            return result;
+        }
+
+        public static class Permutations
+        {
+            public static int[] GetRandomPermutation(int n)
+            {
+                int[] p = new int[n];
+                for (int i = 0; i < n; i++)
+                {
+                    p[i] = i;
+                }
+
+                Random random = new Random();
+                for (int i = n - 1; i > 0; i--)
+                {
+                    int j = random.Next(i + 1);
+                    int tmp = p[i];
+                    p[i] = p[j];
+                    p[j] = tmp;
+                }
+
+                return p;
+            }
+        }
+
+        public static T[] Shuffle<T>(this T[] array)
+        {
+            int length = array.Length;
+            int[] p = Permutations.GetRandomPermutation(length);
+            T[] result = new T[length];
+            for (int i = 0; i < length; i++)
+            {
+                result[i] = array[p[i]];
+            }
+
+            return result;
+        }
+
+        public static MatrixInt MatrixBinPower(MatrixInt a, long n)
+        {
+            MatrixInt result = new MatrixInt(a.Size);
+
+            while (n > 0)
+            {
+                if ((n & 1) != 0)
+                {
+                    result *= a;
+                }
+
+                a *= a;
+                n >>= 1;
+            }
+
+            return result;
+        }
+
+        public static long Gcd(long a, long b)
+        {
+            return b == 0 ? a : Gcd(b, a % b);
+        }
+
+        public static long ExtendedGcd(long a, long b, out long x, out long y)
+        {
+            if (b == 0)
+            {
+                x = 1;
+                y = 0;
+                return a;
+            }
+
+            long x1;
+            long y1;
+            long d = ExtendedGcd(b, a % b, out x1, out y1);
+            x = y1;
+            y = x1 - (a / b) * y1;
+            return d;
+        }
+
+        public static long Lcm(long a, long b)
+        {
+            return (a / Gcd(a, b)) * b;
+        }
+
+        public static bool[] GetPrimes(int n)
+        {
+            n = Math.Max(n, 2);
+            bool[] prime = new bool[n + 1];
+            for (int i = 2; i <= n; i++)
+            {
+                prime[i] = true;
+            }
+
+            for (int i = 2; i * i <= n; i++)
+            {
+                if (prime[i])
+                {
+                    if ((long)i * i <= n)
+                    {
+                        for (int j = i * i; j <= n; j += i)
+                        {
+                            prime[j] = false;
+                        }
+                    }
+                }
+            }
+
+            return prime;
+        }
+
+        public static long GetFibonacciNumber(long n, long mod = 0)
+        {
+            long[,] matrix = new long[,] { { 0, 0, 0 }, { 0, 0, 1 }, { 0, 1, 1 } };
+
+            MatrixInt result = MatrixBinPower(new MatrixInt(matrix, mod), n);
+
+            return result[2, 2];
+        }
+
+        public static long[] GetFibonacciSequence(int n)
+        {
+            long[] result = new long[n];
+            result[0] = result[1] = 1;
+
+            for (int i = 2; i < n; i++)
+            {
+                result[i] = result[i - 1] + result[i - 2];
+            }
+
+            return result;
+        }
+
+        public static long GetInverseElement(long a, long mod)
+        {
+            long x, y;
+            long g = ExtendedGcd(a, mod, out x, out y);
+
+            if (g != 1)
+            {
+                return -1;
+            }
+
+            return ((x % mod) + mod) % mod;
+        }
+
+        public static long[] GetAllInverseElements(long mod)
+        {
+            long[] result = new long[mod];
+            result[1] = 1;
+            for (int i = 2; i < mod; i++)
+            {
+                result[i] = (mod - (((mod / i) * result[mod % i]) % mod)) % mod;
+            }
+
+            return result;
+        }
+    }
+
+    internal static class Reader
+    {
+        public static void ReadInt(out int a)
+        {
+            int[] number = new int[1];
+            ReadInt(number);
+            a = number[0];
+        }
+
+        public static void ReadInt(out int a, out int b)
+        {
+            int[] numbers = new int[2];
+            ReadInt(numbers);
+            a = numbers[0];
+            b = numbers[1];
+        }
+
+        public static void ReadInt(out int int1, out int int2, out int int3)
+        {
+            int[] numbers = new int[3];
+            ReadInt(numbers);
+            int1 = numbers[0];
+            int2 = numbers[1];
+            int3 = numbers[2];
+        }
+
+        public static void ReadInt(out int int1, out int int2, out int int3, out int int4)
+        {
+            int[] numbers = new int[4];
+            ReadInt(numbers);
+            int1 = numbers[0];
+            int2 = numbers[1];
+            int3 = numbers[2];
+            int4 = numbers[3];
+        }
+
+        public static void ReadLong(out long a)
+        {
+            long[] number = new long[1];
+            ReadLong(number);
+            a = number[0];
+        }
+
+        public static void ReadLong(out long a, out long b)
+        {
+            long[] numbers = new long[2];
+            ReadLong(numbers);
+            a = numbers[0];
+            b = numbers[1];
+        }
+
+        public static void ReadLong(out long int1, out long int2, out long int3)
+        {
+            long[] numbers = new long[3];
+            ReadLong(numbers);
+            int1 = numbers[0];
+            int2 = numbers[1];
+            int3 = numbers[2];
+        }
+
+        public static void ReadLong(out long int1, out long int2, out long int3, out long int4)
+        {
+            long[] numbers = new long[4];
+            ReadLong(numbers);
+            int1 = numbers[0];
+            int2 = numbers[1];
+            int3 = numbers[2];
+            int4 = numbers[3];
+        }
+
+        public static void ReadInt(int[] numbers)
+        {
+            // ReSharper disable PossibleNullReferenceException
+            var list = Console.ReadLine().Split();
+            // ReSharper restore PossibleNullReferenceException
+
+            int count = Math.Min(numbers.Length, list.Length);
+
+            for (int i = 0; i < count; i++)
+            {
+                numbers[i] = int.Parse(list[i]);
+            }
+        }
+
+        public static int[] ReadDigits()
+        {
+            // ReSharper disable AssignNullToNotNullAttribute
+            return Console.ReadLine().Select(x => int.Parse(x.ToString())).ToArray();
+            // ReSharper restore AssignNullToNotNullAttribute
+        }
+
+        public static void ReadLong(long[] numbers)
+        {
+            // ReSharper disable PossibleNullReferenceException
+            var list = Console.ReadLine().Split();
+            // ReSharper restore PossibleNullReferenceException
+
+            int count = Math.Min(numbers.Length, list.Length);
+
+            for (int i = 0; i < count; i++)
+            {
+                numbers[i] = long.Parse(list[i]);
+            }
+        }
+
+        public static void ReadDouble(double[] numbers)
+        {
+            // ReSharper disable PossibleNullReferenceException
+            var list = Console.ReadLine().Split();
+            // ReSharper restore PossibleNullReferenceException
+
+            int count = Math.Min(numbers.Length, list.Length);
+
+            for (int i = 0; i < count; i++)
+            {
+                numbers[i] = double.Parse(list[i]);
+            }
+        }
+
+        public static void ReadDouble(out double a, out double b)
+        {
+            double[] numbers = new double[2];
+            ReadDouble(numbers);
+            a = numbers[0];
+            b = numbers[1];
+        }
+
+        public static void ReadDouble(out double int1, out double int2, out double int3)
+        {
+            double[] numbers = new double[3];
+            ReadDouble(numbers);
+            int1 = numbers[0];
+            int2 = numbers[1];
+            int3 = numbers[2];
+        }
+    }
+
+    static class MyMath
+    {
+        public static int GetMinimalPrimeDivisor(int n)
+        {            
+            for (int i = 2; i * i <= n; i++)
+            {
+                if (n % i == 0)
+                {
+                    return i;
+                }
+            }
+
+            return n;
+        }
+
+        public static long Sqr(long x)
+        {
+            return x * x;
+        }
+    }
+
+    public interface IGraph
+    {
+        int Vertices  { get; set; }
+
+        IList<int> this[int i] { get; }
+
+        void AddEdge(int u, int v);
+
+        void AddOrientedEdge(int u, int v);        
+    }
+
+    public class Graph : IGraph
+    {
+        private List<int>[] m_Edges;
+
+        public int Vertices { get; set; }
+
+        public IList<int> this[int i]
+        {
+            get
+            {
+                return this.m_Edges[i];
+            }
+        }
+
+        public Graph(int vertices)
+        {
+            this.Vertices = vertices;
+
+            this.m_Edges = new List<int>[vertices];
+
+            for (int i = 0; i < vertices; i++)
+            {
+                this.m_Edges[i] = new List<int>();
+            }
+        }
+
+        public void AddEdge(int u, int v)
+        {
+            this.AddOrientedEdge(u, v);
+            this.AddOrientedEdge(v, u);
+        }
+
+        public void AddOrientedEdge(int first, int second)
+        {
+            this.m_Edges[first].Add(second);            
+        }
+
+        public int[] Bfs(int start)
+        {
+            int[] d = new int[Vertices];
+            for (int i = 0; i < Vertices; i++)
+            {
+                d[i] = -1;
+            }
+
+            Queue<int> queue = new Queue<int>();
+            queue.Enqueue(start);
+            d[start] = 0;
+
+            while (queue.Count > 0)
+            {
+                int v = queue.Dequeue();
+                foreach (int t in this.m_Edges[v].Where(t => d[t] == -1))
+                {
+                    queue.Enqueue(t);
+                    d[t] = d[v] + 1;
+                }
+            }
+
+            return d;
+        }
+    }    
+
+    class SimpleSumTable
+    {
+        private readonly int[,] m_Sum;
+
+        public SimpleSumTable(int n, int m, int[,] table)
+        {
+            m_Sum = new int[n + 1, m + 1];
+
+            for (int i = 1; i < n + 1; i++)
+            {
+                for (int j = 1; j < m + 1; j++)
+                {
+                    m_Sum[i, j] = m_Sum[i, j - 1] + m_Sum[i - 1, j] - m_Sum[i - 1, j - 1] + table[i, j];
+                }
+            }
+        }
+
+        public int GetSum(int l, int b, int r, int t)
+        {
+            return m_Sum[r, t] - m_Sum[r, b] - m_Sum[l, t] + m_Sum[l, b];
+        }
+    }
+
+    class SegmentTreeSimpleInt<T>
+    {
+        public int Size { get; private set; }
+
+        private readonly T[] m_Tree;
+
+        private Func<T, T, T> m_Operation;
+
+        private T m_Null;
+
+        public SegmentTreeSimpleInt(int size, Func<T, T, T> operation, T nullElement, IList<T> array = null)
+        {
+            this.Size = size;
+            this.m_Operation = operation;
+            this.m_Null = nullElement;
+
+            m_Tree = new T[4 * size];
+            if (array != null)
+            {
+                this.Build(array, 1, 0, size - 1);                
+            }
+        }
+
+        private void Build(IList<T> array, int v, int tl, int tr)
+        {
+            if (tl == tr)
+            {
+                m_Tree[v] = array[tl];
+            }
+            else
+            {
+                int tm = (tl + tr) / 2;
+                this.Build(array, 2 * v, tl, tm);
+                this.Build(array, 2 * v + 1, tm + 1, tr);
+                this.CalculateNode(v);
+            }
+        }
+
+        public T GetSum(int l, int r)
+        {
+            return GetSum(1, 0, Size - 1, l, r);
+        }
+
+        private T GetSum(int v, int tl, int tr, int l, int r)
+        {
+            if (l > r)
+            {
+                return m_Null;
+            }
+
+            if (l == tl && r == tr)
+            {
+                return m_Tree[v];
+            }
+
+            int tm = (tl + tr) / 2;
+
+            return this.m_Operation(GetSum(2 * v, tl, tm, l, Math.Min(r, tm)),GetSum(2 * v + 1, tm + 1, tr, Math.Max(l, tm + 1), r));
+        }
+
+        public void Update(int pos, T newValue)
+        {
+            Update(1, 0, Size - 1, pos, newValue);
+        }
+
+        private void Update(int v, int tl, int tr, int pos, T newValue)
+        {
+            if (tl == tr)
+            {
+                m_Tree[v] = newValue;
+            }
+            else
+            {
+                int tm = (tl + tr) / 2;
+                if (pos <= tm)
+                {
+                    Update(2 * v, tl, tm, pos, newValue);
+                }
+                else
+                {
+                    Update(2 * v + 1, tm + 1, tr, pos, newValue);
+                }
+                this.CalculateNode(v);
+            }
+        }
+
+        private void CalculateNode(int v)
+        {
+            m_Tree[v] = this.m_Operation(m_Tree[2 * v], m_Tree[2 * v + 1]);
+        }
+    }
+
+    struct Pair<TFirst, TSecond>
+    {
+        public Pair(TFirst first, TSecond second)
+            : this()
+        {
+            this.First = first;
+            this.Second = second;
+        }
+
+        public TFirst First { set; get; }
+
+        public TSecond Second { set; get; }
+    }
+
+    class Program
+    {                
+        private static StreamReader m_InputStream;
+
+        private static StreamWriter m_OutStream;
+
+        private static void OpenFiles()
+        {
+            m_InputStream = File.OpenText("input.txt");
+            Console.SetIn(m_InputStream);
+
+            m_OutStream = File.CreateText("output.txt");
+            Console.SetOut(m_OutStream);
+        }
+
+        private static void CloseFiles()
+        {
+            m_OutStream.Flush();
+
+            m_InputStream.Dispose();
+            m_OutStream.Dispose();
+        }
+
+        static void Main()
+        {
+            //OpenFiles();
+
+            new Solution().Solve();
+
+            //CloseFiles();
+        }
+    }
+
+    internal class Solution
+    {
+        public void Solve()
+        {
+            int n;
+            Reader.ReadInt(out n);
+            
+            long[] p = new long[n];
+            Reader.ReadLong(p);
+
+            long[] c = new long[5];
+            Reader.ReadLong(c);
+
+            long current = 0;
+            long[] ans = new long[5];
+
+            for (int i = 0; i < n; i++)
+            {
+                current += p[i];
+                for (int j = 4; j >= 0; j--)
+                {
+                    ans[j] += current / c[j];
+                    current = current % c[j];
+                }
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                Console.Write("{0} ", ans[i]);
+            }
+            Console.WriteLine();
+            Console.Write(current);
+        }
+    }
+}
+
+2023-10-09 17:20:05 - eval_wizardcoder_opt_replenish.py - INFO - input tokens: 5504
+2023-10-09 17:20:05 - eval_wizardcoder_opt_replenish.py - WARNING - Over input tokens limit ---- lang: Mono C#, src_uid: 1ae2942b72ebb7c55359c41e141900d7
+2023-10-09 17:20:22 - eval_wizardcoder_opt_replenish.py - ERROR - Failed to generate text: RetryError[<Future at 0x7efff9ebca90 state=finished raised OutOfMemoryError>]
+2023-10-09 17:20:22 - eval_wizardcoder_opt_replenish.py - ERROR - the 0th generated sequence is None, optimization_0 is set to empty string
+2023-10-09 17:20:22 - eval_wizardcoder_opt_replenish.py - INFO - optimization_0: 
+2023-10-09 17:20:22 - eval_wizardcoder_opt_replenish.py - ERROR - the 1th generated sequence is None, optimization_1 is set to empty string
+2023-10-09 17:20:22 - eval_wizardcoder_opt_replenish.py - INFO - optimization_1: 
+2023-10-09 17:20:22 - eval_wizardcoder_opt_replenish.py - ERROR - the 2th generated sequence is None, optimization_2 is set to empty string
+2023-10-09 17:20:22 - eval_wizardcoder_opt_replenish.py - INFO - optimization_2: 
+2023-10-09 17:20:22 - eval_wizardcoder_opt_replenish.py - ERROR - the 3th generated sequence is None, optimization_3 is set to empty string
+2023-10-09 17:20:22 - eval_wizardcoder_opt_replenish.py - INFO - optimization_3: 
+2023-10-09 17:20:22 - eval_wizardcoder_opt_replenish.py - ERROR - the 4th generated sequence is None, optimization_4 is set to empty string
+2023-10-09 17:20:22 - eval_wizardcoder_opt_replenish.py - INFO - optimization_4: 
+2023-10-09 17:20:22 - eval_wizardcoder_opt_replenish.py - INFO - before replenish, 3 memory optimization samples failed, 8 time optimization samples failed
+2023-10-09 17:20:22 - eval_wizardcoder_opt_replenish.py - INFO - after replenish, 3 memory optimization samples failed, 8 time optimization samples failed
